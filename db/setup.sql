@@ -1,21 +1,20 @@
-DROP DATABASE IF EXISTS Mishnayos;
+DROP DATABASE IF EXISTS mishnayos_db;
+CREATE DATABASE mishnayos_db;
+
+\c mishnayos_db;
 
 
-CREATE DATABASE Mishnayos;
-
-/c Mishnayos;
-CREATE TABLE Sedarim
+CREATE TABLE sedarim_table
 (
-  seder_id SERIAL
-    PRIMARY KEY,
+  seder_id SERIAL PRIMARY KEY,
   seder_name VARCHAR,
   seder_name_he VARCHAR,
   masechta_number NUMERIC,
   perakim_number NUMERIC,
-  mishnayos_number NUMERIC,
+  mishnayos_number NUMERIC
 );
 
-INSERT INTO Sedarim
+INSERT INTO sedarim_table
   (seder_name,seder_name_he)
 VALUES
   ('Zeraim', 'זרעים'),
@@ -24,3 +23,4 @@ VALUES
   ('Nezikin', 'נזיקין'),
   ('Zevachim', 'זבחים'),
   ('Taharos', 'טהרות')
+
