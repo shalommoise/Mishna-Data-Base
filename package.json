@@ -5,12 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "setup-dbs": "psql -f ./db/setup.sql"
+    "setup-dbs": "psql -f ./db/setup.sql",
+    "start": "node listen.js"
+    
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "pg": "^8.6.0"
   }
 }
