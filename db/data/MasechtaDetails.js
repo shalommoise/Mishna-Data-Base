@@ -9,16 +9,14 @@
 // use in for from mishna table to get numbers for Sedarim table
 
 
-
-const fs =require('fs');
-const mishnaNames = require("./mishnaNames.json")
+const mishnaNames = require("./mishnaNames.json");
 const axios = require("axios");
-const {restrictTitle} = require("../utils/utlis")
+const {restrictTitle} = require("../utils/utlis");
 
 const axiosInstance = axios.create({
     baseURL: "https://www.sefaria.org/api/",
   });
-const getMishnaInfo =(mishnaName)=>{
+exports.getMishnaInfo =(mishnaName)=>{
     return axiosInstance
     .get(`/index/${mishnaName}`)
 .then((mishna) => {
@@ -37,8 +35,8 @@ return mishnaObj;
 }
 
 
-// console.log(mishnaNames)
-getMishnaInfo("Mishna%20Berakhot");
+
+
 // fetch('https://www.sefaria.org/api/index/')
 //   .then(response => response.json())
 //   .then(mishna => {
