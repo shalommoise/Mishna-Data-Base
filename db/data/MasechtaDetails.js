@@ -17,19 +17,26 @@ const axiosInstance = axios.create({
     baseURL: "https://www.sefaria.org/api/",
   });
 exports.getMishnaInfo =(mishnaName)=>{
-    return axiosInstance
-    .get(`/index/${mishnaName}`)
-.then((mishna) => {
-const {data} = mishna;
-const {title, heTitle, categories, lengths }= data;
-const mishnaObj = {}
+    
+    const p = new Promise((resolve, reject)=>{
+        return axiosInstance
+        .get(`/index/${mishnaName}`)
+    .then((mishna) => {
+    const {data} = mishna;
+    
+    const {title, heTitle, categories, lengths, order }= data;
+    const mishnaObj = {}
+    
+    mishnaObj.masechtaName = restrictTitle(title)
+    mishnaObj.masechtaNameHe = restrictTitle(heTitle);
+    mishnaObj.sederName = categories[1].split(" ")[1];
+    mishnaObj.perakimNumber = lengths[0];
+    mishnaObj.mishnayosNumber = lengths[1];
+    mishnaObj.masechtaId = order[0];
 
-mishnaObj.masechtaName = restrictTitle(title)
-mishnaObj.masechtaNameHe = restrictTitle(heTitle);
-mishnaObj.sederName = categories[1].split(" ")[1];
-mishnaObj.perakimNumber = lengths[0];
-mishnaObj.mishnayosNumber = lengths[1];
-return mishnaObj;
+    resolve(mishnaObj);
+        })
+        .catch((err) => err);
     })
-    .catch((err) => err);
+  return p;
 }
