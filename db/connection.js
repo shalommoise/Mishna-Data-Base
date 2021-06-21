@@ -9,10 +9,10 @@ const config = {
   host: "localhost",
   port: 5432,
   database: "mishnayos_db",
- connectionString:  ENV === 'production' ? process.env.DATABASE_URL : '',
-        ssl: ENV === 'production' ?  {
-          rejectUnauthorized: false,
-        } : {},
+//  connectionString:  ENV === 'production' ? process.env.DATABASE_URL : '',
+//         ssl: ENV === 'production' ?  {
+//           rejectUnauthorized: false,
+//         } : {},
 }
 
 const {Pool, Client} = require('pg');
