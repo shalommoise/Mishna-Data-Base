@@ -26,12 +26,13 @@ VALUES
 
 CREATE TABLE masechta_table
 (
-  masechta_id SERIAL PRIMARY KEY,
+  masechta_id INT,
   masechta_name VARCHAR,
   masechta_name_he VARCHAR,
   seder_name VARCHAR,
   perakim_number INT,
   mishnayos_number INT,
+  PRIMARY KEY (masechta_id),
   FOREIGN KEY(seder_name) REFERENCES sedarim_table(seder_name)
 );
 
