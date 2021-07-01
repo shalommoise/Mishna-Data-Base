@@ -1,24 +1,37 @@
 const {pool, client} = require("../connection.js");
 
-const mishnaNames = require("../data/mishnaNames.json");
-const {getMishnaInfo} = require("../data/MasechtaDetails");
+const masechtaDetails = require("../data/mishnaIndex.json");
+const {changeSederTitle } = require("../utils/utlis");
 
 
-  
 
 
-mishnaNames.forEach((masechta)=>{
-getMishnaInfo(masechta).then((res)=>  {
-    const {masechtaName, masechtaNameHe, sederName, perakimNumber, mishnayosNumber } = res;
-
+const addMasechtaDetails = (masechtos, number)=>{
+ 
+    // const {masechtaId,masechtaName, masechtaNameHe, sederName, perakimNumber, mishnayosNumber } 
+    const masechtaIds = masechtaDetails.map((datum)=> datum.masechtaId);
+    const masechtaNames = masechtaDetails.map((datum)=> datum.masechtaName);
+    const masechtaNamesHe = masechtaDetails.map((datum)=> datum.masechtaNameHe);
+    const sederNames = masechtaDetails.map((datum)=> datum.sederName);
     return pool.connect()
-    .then(()=>pool.query(`INSERT INTO masechta_table 
-    (masechta_name, masechta_name_he, seder_name, perakim_number, mishnayos_number) 
-    VALUES ('${masechtaName}', '${masechtaNameHe}', '${sederName}', ${perakimNumber}, ${mishnayosNumber});`))
-    .then(()=>console.log(`added ${masechtaName}`))
-    .catch((err)=>console.log(`ERR: ${err}`))
-})
-});
+       .then(()=>pool.query(`INSERT INTO masechta_table 
+       (masechta_id, masechta_name, masechta_name_he, seder_name, number_of_perakim, number_of_misnayos) 
+       VALUES
+       (${masechtaId} ,'${masechtaName}', '${masechtaNameHe}', '${changeSederTitle[sederName]}', ${perakimNumber}, ${mishnayosNumber});`))
+       .then(()=>{
+           console.log(`added ${masechtaName}`);    
+            return  number <= masechtaDetails.length ? addMasechtaDetails(masechtos, number - 1): console.log("finished");
+        }).catch((err)=>{
+            console.log(err)
+        })
+}
+
+
+addMasechtaDetails(masechtaDetails, 0);
+
+
+
+
    
 
 
