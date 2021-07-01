@@ -8,9 +8,9 @@ CREATE TABLE sedarim_table
 (
   seder_name VARCHAR,
   seder_name_he VARCHAR,
-  masechta_number INT,
-  perakim_number INT,
-  mishnayos_number INT,
+  number_of_masechtos INT,
+  number_of_perakim INT,
+  number_of_misnayos INT,
   PRIMARY KEY (seder_name)
 );
 
@@ -21,7 +21,7 @@ VALUES
   ('Moed', 'מועד'),
   ('Nashim', 'נשים'),
   ('Nezikin', 'נזיקין'),
-  ('Zevachim', 'זבחים'),
+  ('Kodshim', 'קדשים'),
   ('Taharos', 'טהרות');
 
 CREATE TABLE masechta_table

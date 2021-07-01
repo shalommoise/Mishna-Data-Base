@@ -11,7 +11,7 @@
 
 const mishnaNames = require("./mishnaNames.json");
 const axios = require("axios");
-const {restrictTitle} = require("../utils/utlis");
+const {restrictTitle, changeSederTitle} = require("../utils/utlis");
 
 const axiosInstance = axios.create({
     baseURL: "https://www.sefaria.org/api/",
@@ -29,7 +29,7 @@ exports.getMishnaInfo =(mishnaName)=>{
     
     mishnaObj.masechtaName = restrictTitle(title)
     mishnaObj.masechtaNameHe = restrictTitle(heTitle);
-    mishnaObj.sederName = categories[1].split(" ")[1];
+    mishnaObj.sederName = changeSederTitle(categories[1].split(" ")[1]);
     mishnaObj.perakimNumber = lengths[0];
     mishnaObj.mishnayosNumber = lengths[1];
     mishnaObj.masechtaId = order[0];
