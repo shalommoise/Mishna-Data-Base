@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watch",
     "setup-dbs": "psql -f ./db/setup.sql",
-    "start": "node listen.js", 
+    "start": "node listen.js",
     "seed": "node ./db/seed/seed.js"
-    
   },
   "keywords": [],
   "author": "",
@@ -16,5 +15,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "pg": "^8.6.0"
+  },
+  "devDependencies": {
+    "jest": "^27.0.6"
   }
 }

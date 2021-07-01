@@ -13,3 +13,7 @@ exports.changeSederTitle = {
     Kodashim: "Kodshim",
     Nezikin: "Nezikin"
 }
+
+exports.reorderMasechtaArray = (arr)=>{
+    if(!arr||!arr.length) return [];
+}
