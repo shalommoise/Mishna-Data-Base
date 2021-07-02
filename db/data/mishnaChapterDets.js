@@ -2,24 +2,31 @@ const fs =require('fs');
 
 const masechtaDetails = require('./mishnaIndex.json')
 const {getMishnaText}= require("./MasechtaDetails")
+const {reorderMasechtaArray} = require("../utils/utlis")
 
-
-const mishnaIndex =[];
-
-masechtaDetails.forEach((masechta)=>{
-    const {masechtaName,perakimNumber, mishnayosNumber} = masechta;
-  console.log(masechtaName, perakimNumber, mishnayosNumber)
-//     getMishnaText(name)
-//   .then((res)=>{
-// console.log(res)
-//     // mishnaIndex.push(res);
-//   })
-//   .then(()=>{
-//     const str = JSON.stringify(mishnaIndex)
-//     fs.writeFile("db/data/chapterIndex.json",str, (err) => {
-//         if (err) throw err;
-//         console.log("The file was succesfully saved!");
-//     })
-//   })
-});
+const mishnaChapterIndex =[];
+const reorderedMasechtos = reorderMasechtaArray(masechtaDetails, "masechtaId");
+reorderedMasechtos.forEach((masechta,i)=>{
+    const {masechtaName,perakimNumber, mishnayosNumber, masechtaId} = masechta;
+    const getMishnaByMasechta =(chapter)=> {
+        getMishnaText(masechtaName, chapter, 1)
+        .then((res)=>{
+            const {numOfMishnyosInTexts} = res
+      const chapterObj = {masechtaName, chapter ,numOfMishnyosInTexts }
+      
+          mishnaChapterIndex.push(chapterObj);
+        }).then(()=>{
+            return chapter <= perakimNumber && getMishnaByMasechta(chapter + 1) 
+        }) .then(()=>{
+            const str = JSON.stringify(mishnaChapterIndex)
+            fs.writeFile("db/data/chapterIndex.json",str, (err) => {
+                if (err) throw err;
+                console.log("The file was succesfully saved!");
+            })
+          })
+        
+    }
+    getMishnaByMasechta(1)
+})
+ 
 
