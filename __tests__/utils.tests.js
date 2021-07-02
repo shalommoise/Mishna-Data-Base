@@ -39,6 +39,11 @@ describe("reorderMasechtaArray", ()=>{
     test("mishnayos", ()=>{
         const output = reorderMasechtaArray(masechtaDetails, "masechtaId");
         expect(output[0].masechtaName).toBe("Berakhot");
+        expect(output[1].masechtaName).toBe("Peah");
+        output.forEach((details, index)=>{
+            const {masechtaId} = details;
+            expect(masechtaId).toBe(index + 1)
+        })
     })
     test("not input mutation", ()=>{
         const input =  [
