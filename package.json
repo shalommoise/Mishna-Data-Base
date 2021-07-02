@@ -7,7 +7,7 @@
     "test": "jest --watch",
     "setup-dbs": "psql -f ./db/setup.sql",
     "start": "node listen.js",
-    "seed": "node ./db/seed/seed.js"
+    "seed": "psql -f ./db/setup.sql && node ./db/seed/seed.js"
   },
   "keywords": [],
   "author": "",
