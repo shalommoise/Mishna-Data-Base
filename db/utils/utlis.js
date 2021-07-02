@@ -14,12 +14,24 @@ exports.changeSederTitle = {
     Nezikin: "Nezikin"
 }
 
-exports.reorderMasechtaArray = (arr)=>{
+exports.reorderMasechtaArray = (arr, id)=>{
+    
     if(!arr||!arr.length) return [];
-    const answerArr = [];
-    answerArr.length = arr.length;
+    const reorderArr = [];
+    reorderArr.length = arr.length;
+if(id) {
+    arr.forEach((obj) => {
+         const index = obj[id]
+        reorderArr.splice(index, 1, obj);
+     });
+} else {
     arr.forEach((num) => {
-        answerArr.splice(num - 1, 1, num);
+        const index = num;
+        reorderArr.splice(index, 0, num);
+       
     });
+       }
+    const answerArr = reorderArr.filter((num)=> num!=="undefined");
+
     return answerArr;
 }
