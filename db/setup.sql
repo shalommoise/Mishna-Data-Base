@@ -45,6 +45,7 @@ CREATE TABLE mishna_table
   masechta_id INT,
   mishna_text_he VARCHAR,
   mishna_text_eng VARCHAR,
+  masechta_name VARCHAR,
  FOREIGN KEY(masechta_id) REFERENCES masechta_table(masechta_id)
 );
 
