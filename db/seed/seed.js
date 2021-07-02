@@ -2,10 +2,9 @@ const {pool, client} = require("../connection.js");
 
 const masechtaDetails = require("../data/mishnaIndex.json");
 const {changeSederTitle, reorderMasechtaArray } = require("../utils/utlis");
-
+const {getMishnaText} = require("../data/MasechtaDetails")
 
 const reorderedMasechtos = reorderMasechtaArray(masechtaDetails, "masechtaId");
-
 const runSeed = ()=>{    
     
     return pool.connect()
@@ -45,14 +44,38 @@ const updateSederTable = ()=>{
          return pool.query(`UPDATE sedarim_table SET number_of_masechtos=${numberOfMasechtos}, number_of_perakim=${perakimNumber}, number_of_misnayos=${mishnayosNumber} WHERE seder_name ='${sedraim[n]}';`)
          .then(()=>{
              console.log(`updated ${Object.values(changeSederTitle)[n]}`)
-             return n < sedraim.length - 1 && updateSingleSeder(n + 1);
+             return n < sedraim.length - 1 ? updateSingleSeder(n + 1): setMishnayosTable();
          })
         })
        }
        updateSingleSeder(0)
-})
-
+});
 }
+
+const setMishnayosTable =()=>{
+
+    return pool.connect()
+    .then(()=>{
+        const insertMishnaText =(reorderedMasechtos, n)=>{
+            
+            const {masechtaName, masechtaId, perakimNumber} = reorderedMasechtos[n];
+            
+            for (let chapter = 1; chapter <= perakimNumber; chapter++){
+                let mishnayosInChapter = 1; 
+                getMishnaText(masechtaName, chapter, mishnayosInChapter)
+                .then((res)=>{
+                   const {perakim_number, mishna_number, mishna_text_he, mishna_text_eng, numOfMishnyosInTexts} =res;
+                   mishnayosInChapter = numOfMishnyosInTexts;
+                });
+            }
+            
+            // return pool.query(`INSERT INTO mishna_table () VALUES () WHERE `)
+        }
+    insertMishnaText(reorderedMasechtos, 0)
+    })
+    
+}
+
 
 runSeed();
 

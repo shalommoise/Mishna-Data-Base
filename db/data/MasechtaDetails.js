@@ -52,6 +52,7 @@ return axiosInstance
           mishnaObj.masechtaName = name;
           mishnaObj.mishna_text_he = data.he[mishnaNumber - 1];
           mishnaObj.mishna_text_eng = data.text[mishnaNumber - 1];
+          mishnaObj.numOfMishnyosInTexts =  data.text.length
          resolve(mishnaObj);
  
         })
