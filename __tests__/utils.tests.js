@@ -42,7 +42,7 @@ describe("reorderMasechtaArray", ()=>{
         expect(output[1].masechtaName).toBe("Peah");
         output.forEach((details, index)=>{
             const {masechtaId} = details;
-            expect(masechtaId).toBe(index + 1)
+             expect(masechtaId).toBe(index + 1)
         })
     })
     test("not input mutation", ()=>{
