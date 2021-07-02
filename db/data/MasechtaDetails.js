@@ -14,7 +14,7 @@ const axios = require("axios");
 const {restrictTitle, changeSederTitle} = require("../utils/utlis");
 
 const axiosInstance = axios.create({
-    baseURL: "https://www.sefaria.org/api/",
+    baseURL: "https://www.sefaria.org/api",
   });
 exports.getMishnaInfo =(mishnaName)=>{
     
@@ -40,3 +40,23 @@ exports.getMishnaInfo =(mishnaName)=>{
     })
   return p;
 }
+ exports.getMishnaText = (name, chapter, mishnaNumber) =>{
+  const p = new Promise((resolve, reject)=>{
+return axiosInstance
+        .get(`/texts/Mishnah_${name}.${chapter}`).then((res)=>{
+         const {data} = res;
+        
+          const mishnaObj ={}
+          mishnaObj.perek_number = chapter;
+          mishnaObj.mishna_number = mishnaNumber;
+          mishnaObj.masechtaName = name;
+          mishnaObj.mishna_text_he = data.he[mishnaNumber - 1];
+          mishnaObj.mishna_text_eng = data.text[mishnaNumber - 1];
+         resolve(mishnaObj);
+ 
+        })
+        .catch((err) => err);
+      })
+      return p;
+}
+
