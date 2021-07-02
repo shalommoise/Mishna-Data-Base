@@ -16,4 +16,10 @@ exports.changeSederTitle = {
 
 exports.reorderMasechtaArray = (arr)=>{
     if(!arr||!arr.length) return [];
+    const answerArr = [];
+    answerArr.length = arr.length;
+    arr.forEach((num) => {
+        answerArr.splice(num - 1, 1, num);
+    });
+    return answerArr;
 }
