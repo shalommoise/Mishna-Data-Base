@@ -31,8 +31,7 @@ const updateSederTable = ()=>{
     return pool.connect()
     .then(()=>{
        const updateSingleSeder =(n)=>{    
-           console.log(n)  
-        return pool.query(`SELECT * FROM masechta_table WHERE seder_name ='${sedraim[n]}';`)
+          return pool.query(`SELECT * FROM masechta_table WHERE seder_name ='${sedraim[n]}';`)
         .then((res)=>{
 
          const numberOfMasechtos = res.rows.length;
