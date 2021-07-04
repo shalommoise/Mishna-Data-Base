@@ -1,11 +1,12 @@
 const {pool, client} = require("../connection.js");
 const masechtaDetails = require("../data/mishnaIndex.json");
-const {changeSederTitle, reorderMasechtaArray , reorderNestedArrays} = require("../utils/utlis");
+const {changeSederTitle, reorderMasechtaArray , reorderNestedArrays, removeApostraphe} = require("../utils/utlis");
 const {getMishnaText} = require("../data/MasechtaDetails")
 const chapterIndex = require("../data/chapterIndex.json") 
 const reorderedMasechtos = reorderMasechtaArray(masechtaDetails, "masechtaId");
+const reorderedIndex = reorderNestedArrays(chapterIndex, "masechtaId");   
+
 const runSeed = ()=>{    
-    
     return pool.connect()
        .then(()=>{
            const  insertDetails = (reorderedMasechtos, n)=>  {
@@ -52,12 +53,10 @@ const updateSederTable = ()=>{
 }
 
 const setMishnayosTable =()=>{
-    
-const reorderedIndex = reorderNestedArrays(chapterIndex, "masechtaId");   
 return pool.connect()
     .then(()=>{
         const insertMasechtaIndex =(n)=>{
-            
+            console.log(n)
              const masechtaInfo = reorderedIndex[n];
              const {masechtaName, masechtaId } = masechtaInfo[0];
              const masechtaArr = [];
@@ -82,12 +81,38 @@ return pool.connect()
           }
           insertMishnaIndex(0, masechtaName, masechtaId ).then(()=>{
             console.log(`finished ${masechtaName}`)
-            return n < reorderedIndex.length - 1 && insertMasechtaIndex(n + 1); 
+            return n < reorderedIndex.length - 1 ? insertMasechtaIndex(n + 1) : insertMishnaText(); 
         })
         } 
     insertMasechtaIndex(0);
     })
     
+}
+
+
+const insertMishnaText = () =>{
+    return pool.connect()
+    .then(()=> pool.query("SELECT mishna_id FROM mishna_table;"))
+    .then((res)=>{
+        const rows = res.rows.length;
+        const insertByChapter =(n)=>{
+            return pool.query(`SELECT * FROM mishna_table where mishna_id = ${n};`)
+            .then((res)=>{
+                const {mishna_id, perek_number, mishna_number, masechta_name} = res.rows[0];
+                getMishnaText(masechta_name, perek_number, mishna_number)
+                .then((res)=>{
+                    const {mishna_text_eng, mishna_text_he} = res;
+                    return pool.query(`UPDATE mishna_table SET mishna_text_he='${removeApostraphe(mishna_text_he)}', mishna_text_eng='${removeApostraphe(mishna_text_eng)}' WHERE mishna_id = ${mishna_id};`) 
+                }).then(()=>{
+                    console.log(`added text for ${masechta_name}, chapter: ${perek_number}, mishna: ${mishna_number}`);
+                    return n < rows  && insertByChapter(n + 1);
+                })
+                
+            })
+            
+        }
+        insertByChapter(1);
+    })
 }
 
 
