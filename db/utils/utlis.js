@@ -43,5 +43,6 @@ exports.reorderNestedArrays =(arr , id)=>{
         reorderArr[obj[id]].push(obj);
     }) 
     reorderArr.shift();
-    return reorderArr;
+    const answerArr = reorderArr.filter((arr)=> arr.length > 0);
+    return answerArr;
 }
