@@ -1,4 +1,4 @@
-const {reorderMasechtaArray} = require("../db/utils/utlis");
+const {reorderMasechtaArray, removeApostraphe, addApostraphe} = require("../db/utils/utlis");
 const masechtaDetails = require("../db/data/mishnaIndex.json")
 describe("reorderMasechtaArray", ()=>{
     test("returns empty array", ()=>{
@@ -64,3 +64,40 @@ describe("reorderMasechtaArray", ()=>{
     })
 })
 
+
+describe("removeApostraphe", ()=>{
+    test('Empty strings returns empty string', () => {
+      expect(removeApostraphe()).toBe('');
+      expect(removeApostraphe('')).toBe('');
+      expect(removeApostraphe([])).toBe('');
+      expect(removeApostraphe({})).toBe('');
+    });
+    test('String with no apostaphe does not change', ()=>{
+      const text = "Many people know Watson as the IBM-developed cognitive super computer that won the Jeopardy! gameshow in 2011. In truth, Watson is not actually a computer but a set of algorithms and APIs, and since winning TV fame (and a $1 million prize) IBM has put it to use tackling tough problems in every industry from healthcare to finance. Most recently, IBM has announced several new partnerships which aim to take things even further, and put its cognitive capabilities to use solving a whole new range of problems around the world."
+      expect(removeApostraphe(text)).toBe(text);
+    })
+    test('String replaces apostraphe', () => {
+       const text = "will This work. I don't know, we'll see.";
+       const newText = "will This work. I don\"t know, we\"ll see.";
+       expect(removeApostraphe(text)).toBe(newText);
+    });
+  })
+  
+  describe("addApostraphe", ()=>{
+     test('Empty strings returns empty string', () => {
+      expect(addApostraphe()).toBe('');
+      expect(addApostraphe('')).toBe('');
+      expect(addApostraphe([])).toBe('');
+      expect(addApostraphe({})).toBe('');
+    });
+     test('String with no apostaphe does not change', ()=>{
+      const text = "Many people know Watson as the IBM-developed cognitive super computer that won the Jeopardy! gameshow in 2011. In truth, Watson is not actually a computer but a set of algorithms and APIs, and since winning TV fame (and a $1 million prize) IBM has put it to use tackling tough problems in every industry from healthcare to finance. Most recently, IBM has announced several new partnerships which aim to take things even further, and put its cognitive capabilities to use solving a whole new range of problems around the world."
+      expect(addApostraphe(text)).toBe(text);
+    });
+    test('String replaces apostraphe', () => {
+       
+       const text = "will This work. I don\"t know, we\"ll see.";
+       const newText = "will This work. I don't know, we'll see.";
+       expect(addApostraphe(text)).toBe(newText);
+    });
+  })

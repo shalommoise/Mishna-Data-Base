@@ -46,3 +46,15 @@ exports.reorderNestedArrays =(arr , id)=>{
     const answerArr = reorderArr.filter((arr)=> arr.length > 0);
     return answerArr;
 }
+
+exports.removeApostraphe =(text)=>{
+    if(!text||!text.length) return '';
+    const newText = text.replace(/'/g, '"');
+    return newText;
+  }
+  
+  exports.addApostraphe =(text)=>{
+   if(!text||!text.length) return '';
+    const newText = text.replace(/"/g, "'");
+     return newText;
+  }
