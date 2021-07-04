@@ -12,7 +12,7 @@ reorderedMasechtos.forEach((masechta,i)=>{
         getMishnaText(masechtaName, chapter, 1)
         .then((res)=>{
             const {numOfMishnyosInTexts} = res
-      const chapterObj = {masechtaName, chapter ,numOfMishnyosInTexts }
+      const chapterObj = {masechtaName, chapter ,numOfMishnyosInTexts, masechtaId }
       
           mishnaChapterIndex.push(chapterObj);
         }).then(()=>{
@@ -21,7 +21,7 @@ reorderedMasechtos.forEach((masechta,i)=>{
             const str = JSON.stringify(mishnaChapterIndex)
             fs.writeFile("db/data/chapterIndex.json",str, (err) => {
                 if (err) throw err;
-                console.log("The file was succesfully saved!");
+                console.log(`Added ${masechtaName}, chapter: ${perakimNumber}`);
             })
           })
         

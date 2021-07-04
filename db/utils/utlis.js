@@ -35,3 +35,13 @@ if(id) {
 
     return answerArr;
 }
+
+exports.reorderNestedArrays =(arr , id)=>{
+    if(!arr||!arr.length) return [];
+  const  reorderArr = arr.map(()=>[]);
+    arr.forEach((obj)=>{
+        reorderArr[obj[id]].push(obj);
+    }) 
+    reorderArr.shift();
+    return reorderArr;
+}

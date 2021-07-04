@@ -1,9 +1,8 @@
 const {pool, client} = require("../connection.js");
-
 const masechtaDetails = require("../data/mishnaIndex.json");
-const {changeSederTitle, reorderMasechtaArray } = require("../utils/utlis");
+const {changeSederTitle, reorderMasechtaArray , reorderNestedArrays} = require("../utils/utlis");
 const {getMishnaText} = require("../data/MasechtaDetails")
-
+const chapterIndex = require("../data/chapterIndex.json") 
 const reorderedMasechtos = reorderMasechtaArray(masechtaDetails, "masechtaId");
 const runSeed = ()=>{    
     
@@ -53,25 +52,40 @@ const updateSederTable = ()=>{
 }
 
 const setMishnayosTable =()=>{
-
-    return pool.connect()
+    
+const reorderedIndex = reorderNestedArrays(chapterIndex, "masechtaId");   
+return pool.connect()
     .then(()=>{
-        const insertMishnaText =(reorderedMasechtos, n)=>{
+        const insertMasechtaIndex =(n)=>{
             
-            const {masechtaName, masechtaId, perakimNumber} = reorderedMasechtos[n];
-            
-            for (let chapter = 1; chapter <= perakimNumber; chapter++){
-                let mishnayosInChapter = 1; 
-                getMishnaText(masechtaName, chapter, mishnayosInChapter)
-                .then((res)=>{
-                   const {perakim_number, mishna_number, mishna_text_he, mishna_text_eng, numOfMishnyosInTexts} =res;
-                   mishnayosInChapter = numOfMishnyosInTexts;
-                });
-            }
-            
-            // return pool.query(`INSERT INTO mishna_table () VALUES () WHERE `)
-        }
-    insertMishnaText(reorderedMasechtos, 0)
+             const masechtaInfo = reorderedIndex[n];
+             const {masechtaName, masechtaId } = masechtaInfo[0];
+             const masechtaArr = [];
+          masechtaInfo.forEach((perek)=>{
+           
+              const {chapter, numOfMishnyosInTexts} = perek;
+              for (let i = 1; i <= numOfMishnyosInTexts; i++){
+                masechtaArr.push([chapter, i]);
+              }
+          })
+         console.log(`starting ${masechtaName} `);
+          const insertMishnaIndex =(x , name , id) =>{
+            return pool.query(`INSERT INTO mishna_table 
+            (masechta_id, masechta_name, perek_number , mishna_number) 
+            VALUES 
+            (${id}, '${name}', ${masechtaArr[x][0]}, ${masechtaArr[x][1]});`
+            )
+            .then(()=>{
+                console.log(`indexed ${name} , chapter: ${masechtaArr[x][0]}, mishna: ${masechtaArr[x][1]}`);
+             return  x < masechtaArr.length - 1 && insertMishnaIndex(x + 1, masechtaName, masechtaId);
+            })
+          }
+          insertMishnaIndex(0, masechtaName, masechtaId ).then(()=>{
+            console.log(`finished ${masechtaName}`)
+            return n < reorderedIndex.length - 1 && insertMasechtaIndex(n + 1); 
+        })
+        } 
+    insertMasechtaIndex(0);
     })
     
 }
