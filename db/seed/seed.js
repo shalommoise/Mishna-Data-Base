@@ -1,6 +1,6 @@
 const {pool, client} = require("../connection.js");
 const masechtaDetails = require("../data/mishnaIndex.json");
-const {changeSederTitle, reorderMasechtaArray , reorderNestedArrays, removeApostraphe} = require("../utils/utlis");
+const {changeSederTitle, reorderMasechtaArray , reorderNestedArrays, removeApostraphe, altMasechtaNames} = require("../utils/utlis");
 const {getMishnaText} = require("../data/MasechtaDetails")
 const chapterIndex = require("../data/chapterIndex.json") 
 const reorderedMasechtos = reorderMasechtaArray(masechtaDetails, "masechtaId");
@@ -116,7 +116,72 @@ const insertMishnaText = () =>{
 }
 
 
-runSeed();
+const shiurimDatabase = ()=>{
+    return pool.connect()
+    .then(()=>pool.query(`DROP TABLE IF EXISTS shiurim_table; CREATE TABLE shiurim_table
+    (
+      shiur_id SERIAL PRIMARY KEY,
+      start_mishna INT,
+      end_mishna INT,
+      number_of_mishnayos INT,
+      shiur_title VARCHAR,
+      shiur_text VARCHAR,
+       shiur_audio VARCHAR,
+      FOREIGN KEY(start_mishna) REFERENCES mishna_table(mishna_id),
+      FOREIGN KEY(end_mishna) REFERENCES mishna_table(mishna_id));`))
+    .then(()=>{
+    
+        const mishnayosBySeder = {}
+        reorderedMasechtos.forEach((masechta)=>{
+            mishnayosBySeder[masechta["sederName"]] ? mishnayosBySeder[masechta["sederName"]].push(masechta) :   mishnayosBySeder[masechta["sederName"]] = [masechta]
+        })
+        const sedarim = Object.keys(changeSederTitle);     
+        const insertBySeder = (i)=>{
+            const seder = sedarim[i];
+            const mishnayos = []
+            const insertByMasechta = (x)=>{
+                return pool.query(`SELECT mishna_id, masechta_name, perek_number, mishna_number FROM mishna_table WHERE masechta_name='${mishnayosBySeder[seder][x].masechtaName}';`)
+                .then((res)=>{
+            res.rows.forEach((mishna)=>{mishnayos.push(mishna)});
+            return x < mishnayosBySeder[seder].length- 1 && insertByMasechta(x+1);
+                })
+                
+            }
+            insertByMasechta(0)
+            .then(()=>{
+                insertShiur(mishnayos, 0)
+                .then(()=>{
+                    console.log(`finished adding shiurim for Seder ${seder}`)
+                    return i < sedarim.length - 1 && insertBySeder(i + 1);
+                })
+            })
+            
+       
+        }
+        insertBySeder(0)
+           const insertShiur = (arr, n)=>{
+               const reorderedArr = reorderMasechtaArray(arr, "mishna_id");
+               if(!reorderedArr[n]) return "finished";
+               const firstMishna = reorderedArr[n];  
+   const uniqueCase =  firstMishna.masechta_name === "Maaser Sheni" && firstMishna.perek_number === 1 && firstMishna.mishna_number === 7;
+let lastMishna = reorderedArr[n+3] ? reorderedArr[n+3] : reorderedArr[n+2] ? reorderedArr[n+2] : reorderedArr[n+1] ? reorderedArr[n+1]: reorderedArr[n];
+if(uniqueCase) lastMishna = reorderedArr[n+2];
+let title = `${altMasechtaNames[firstMishna.masechta_name]} ${firstMishna.perek_number}:${firstMishna.mishna_number}-${lastMishna.perek_number}:${lastMishna.mishna_number}`;
+if(firstMishna.masechta_name !== lastMishna.masechta_name) title = `${altMasechtaNames[firstMishna.masechta_name]} ${firstMishna.perek_number}:${firstMishna.mishna_number} - ${altMasechtaNames[lastMishna.masechta_name]} ${lastMishna.perek_number}:${lastMishna.mishna_number}`;
+return pool.query(`INSERT INTO shiurim_table (start_mishna, end_mishna, number_of_mishnayos, shiur_title)
+                                      VALUES (${firstMishna.mishna_id}, ${lastMishna.mishna_id}, ${lastMishna.mishna_id - firstMishna.mishna_id + 1}, '${title}');`)
+                                      .then(()=>{
+                                          console.log(`added ${title}`);
+                                          if(uniqueCase) insertShiur (arr, n + 3);
+                                          return n < arr.length - 1 && insertShiur (arr, n + 4);
+                                      })
+}
+    })
+       
+    
+}
+shiurimDatabase()
+// runSeed();
 
 
 
