@@ -6,12 +6,13 @@ return newTitle;
 }
 
 exports.changeSederTitle = {
-    Tahorot: "Taharos",
+    
     Zeraim: "Zeraim",
     Moed: "Moed",
     Nashim: "Nashim",
+    Nezikin: "Nezikin",
     Kodashim: "Kodshim",
-    Nezikin: "Nezikin"
+    Tahorot: "Taharos"
 }
 
 exports.reorderMasechtaArray = (arr, id)=>{
