@@ -1,4 +1,4 @@
-const {reorderMasechtaArray, removeApostraphe, addApostraphe} = require("../db/utils/utlis");
+const {reorderMasechtaArray, removeApostraphe, addApostraphe, linkToTitle} = require("../db/utils/utils");
 const masechtaDetails = require("../db/data/mishnaIndex.json")
 describe("reorderMasechtaArray", ()=>{
     test("returns empty array", ()=>{
@@ -100,4 +100,54 @@ describe("removeApostraphe", ()=>{
        const newText = "will This work. I don't know, we'll see.";
        expect(addApostraphe(text)).toBe(newText);
     });
+  })
+
+  describe("linkToTitle", ()=>{
+      test("empty link returns empty string", ()=>{
+        expect(linkToTitle()).toBe("");
+        expect(linkToTitle("")).toBe("");
+      });
+      test("converts link to title", ()=>{
+          const link = "https://time4torah.org/wp-content/uploads/2017/09/Brachos-3.4-4.1.mp3";
+          const title = "Brachos 3:4-4:1";
+          expect(linkToTitle(link)).toBe(title)
+      });
+        test("try all multiple links", ()=>{
+            const shiurimLinks = [
+            "http://time4torah.org/wp-content/uploads/2021/06/Tevul_Yom_4.7-Yadayim_1.3.mp3",
+            "http://time4torah.org/wp-content/uploads/2021/06/Tevul_Yom_4.7-Yadayim_1.3.mp3",
+            "http://time4torah.org/wp-content/uploads/2021/06/Yadayim_1.4-2.2.mp3",
+            "http://time4torah.org/wp-content/uploads/2021/06/Yadayim_2.3-3.2.mp3",
+            "http://time4torah.org/wp-content/uploads/2021/06/Yadayim_3.3-4.1.mp3",
+            "http://time4torah.org/wp-content/uploads/2021/06/Yadayim_4.2-4.5.mp3",
+            "http://time4torah.org/wp-content/uploads/2021/06/Yadayim_4.6-Uktzin_1.1.mp3",
+            "http://time4torah.org/wp-content/uploads/2021/06/Uktzin_1.2-1.5.mp3",
+            "http://time4torah.org/wp-content/uploads/2021/06/Uktzin_1.6-2.3.mp3",
+            "http://time4torah.org/wp-content/uploads/2021/06/Uktzin_2.4-2.7.mp3",
+            "http://time4torah.org/wp-content/uploads/2021/06/Uktzin_2.8-3.1.mp3",
+            "http://time4torah.org/wp-content/uploads/2021/06/Uktzin_3.2-3.5.mp3",
+            "http://time4torah.org/wp-content/uploads/2021/06/Uktzin_3.6-3.9.mp3",
+            "http://time4torah.org/wp-content/uploads/2021/06/Uktzin_3.10-3.12.mp3",
+            ];
+            const titles = [ 
+            "Tevul Yom 4:7-Yadayim 1:3",
+            "Tevul Yom 4:7-Yadayim 1:3",
+            "Yadayim 1:4-2:2",
+            "Yadayim 2:3-3:2",
+            "Yadayim 3:3-4:1",
+            "Yadayim 4:2-4:5",
+            "Yadayim 4:6-Uktzin 1:1",
+            "Uktzin 1:2-1:5",
+            "Uktzin 1:6-2:3",
+            "Uktzin 2:4-2:7",
+            "Uktzin 2:8-3:1",
+            "Uktzin 3:2-3:5",
+            "Uktzin 3:6-3:9",
+            "Uktzin 3:10-3:12",
+            ]
+            shiurimLinks.forEach((link, index)=>{
+ 
+                expect(linkToTitle(link)).toBe(titles[index])
+            })
+        })
   })

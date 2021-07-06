@@ -135,5 +135,29 @@ exports.switchAltName = (obj)=>{
     entries.forEach((entry)=>{
         newObj[entry[1]] = entry[0]  
     })
-    return newObj
+    return newObj;
+}
+
+exports.linkToTitle = (link)=>{
+    if(!link) return "";
+    const arr = link.split("/");
+    const withMp3 = arr[arr.length-1];
+    const titleArr = withMp3.split(".");
+    titleArr.pop();
+
+    const prepTitle = titleArr.join(":");
+
+    const titleWithGaps = prepTitle.split("-");
+   if(titleWithGaps.length === 2) {
+
+       const addStop = titleWithGaps.join("-");
+   
+    return addStop.split("_").join(" ");
+    };
+  
+    titleWithGaps.splice(1, 0 ," ");
+    titleWithGaps.splice(3, 0 ,"-")
+    const title = titleWithGaps.join("");
+    return title;
+
 }
