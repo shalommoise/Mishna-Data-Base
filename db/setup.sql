@@ -63,3 +63,15 @@ CREATE TABLE shiurim_table
   FOREIGN KEY(end_mishna) REFERENCES mishna_table(mishna_id)
 
 );
+
+CREATE TABLE siyum_makers
+(
+  admin_id SERIAL PRIMARY KEY,
+  admin_email = VARCHAR NOT NULL,
+  admin_fname = VARCHAR NOT NULL,
+  admin_sname = VARCHAR NOT NULL,
+  siyum_name = VARCHAR NOT NULL,
+  siyum_type = VARCHAR DEFAULT 'Shloshim',
+  date_made = GETDATE(),
+  finish_date = VARCHAR NOT NULL
+); 
