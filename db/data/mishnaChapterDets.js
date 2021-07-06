@@ -2,7 +2,7 @@ const fs =require('fs');
 
 const masechtaDetails = require('./mishnaIndex.json')
 const {getMishnaText}= require("./MasechtaDetails")
-const {reorderMasechtaArray} = require("../utils/utlis")
+const {reorderMasechtaArray} = require("../utils/utils")
 
 const mishnaChapterIndex =[];
 const reorderedMasechtos = reorderMasechtaArray(masechtaDetails, "masechtaId");

@@ -67,11 +67,11 @@ CREATE TABLE shiurim_table
 CREATE TABLE siyum_makers
 (
   admin_id SERIAL PRIMARY KEY,
-  admin_email = VARCHAR NOT NULL,
-  admin_fname = VARCHAR NOT NULL,
-  admin_sname = VARCHAR NOT NULL,
-  siyum_name = VARCHAR NOT NULL,
-  siyum_type = VARCHAR DEFAULT 'Shloshim',
-  date_made = GETDATE(),
-  finish_date = VARCHAR NOT NULL
+  admin_email VARCHAR NOT NULL,
+  admin_fname VARCHAR NOT NULL,
+  admin_sname VARCHAR NOT NULL,
+  siyum_name VARCHAR NOT NULL,
+  siyum_type VARCHAR DEFAULT 'Shloshim',
+  date_made TIMESTAMP,
+  finish_date VARCHAR NOT NULL
 ); 

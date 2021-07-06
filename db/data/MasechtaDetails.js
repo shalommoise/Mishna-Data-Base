@@ -11,7 +11,7 @@
 
 const mishnaNames = require("./mishnaNames.json");
 const axios = require("axios");
-const {restrictTitle, changeSederTitle} = require("../utils/utlis");
+const {restrictTitle, changeSederTitle} = require("../utils/utils");
 
 const axiosInstance = axios.create({
     baseURL: "https://www.sefaria.org/api",
