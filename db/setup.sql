@@ -74,5 +74,6 @@ CREATE TABLE siyum_makers
   siyum_name VARCHAR NOT NULL,
   siyum_type VARCHAR DEFAULT 'Shloshim',
   date_made TIMESTAMP,
-  finish_date VARCHAR NOT NULL
+  finish_date VARCHAR NOT NULL,
+  msg VARCHAR
 ); 
