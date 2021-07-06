@@ -4,7 +4,8 @@ const {changeSederTitle, reorderMasechtaArray , reorderNestedArrays, removeApost
 const {getMishnaText} = require("../data/MasechtaDetails");
 const chapterIndex = require("../data/chapterIndex.json") ;
 const shiurimLinks = require("../data/shiurimLinks");
-const editedShiurimTitles = require("../data/titles.json")
+const editedShiurimTitles = require("../data/titles.json");
+const summarylinks = require("../data/summarylinks");
 const reorderedMasechtos = reorderMasechtaArray(masechtaDetails, "masechtaId");
 const reorderedIndex = reorderNestedArrays(chapterIndex, "masechtaId");   
 
@@ -23,7 +24,7 @@ const runSeed = ()=>{
         })}
         insertDetails(reorderedMasechtos, 0)
     })
-    .finally(()=> client.end())
+  
        
 }
 
@@ -181,11 +182,29 @@ const insertSingleLink =(n)=>{
     return pool.query(`UPDATE shiurim_table SET shiur_audio='${link}' WHERE shiur_title='${title}';`)
     .then(()=>{
         console.log(`inserted shiur for ${title}`)
-        return n < shiurimLinks.length - 1 ? insertSingleLink (n + 1) : insertMishnaText();
+        return n < shiurimLinks.length - 1 ? insertSingleLink (n + 1) : insertSummaryLinks();
     })
 }
 insertSingleLink(0)
     })
+}
+const insertSummaryLinks = ()=>{
+    const summaries = summarylinks();
+    const names = Object.keys(summaries);
+    return pool.connect()
+    .then(()=>{
+        const insertSummary =(n)=>{
+          const masechtaName = names[n];
+          const masechtaLink = summaries[masechtaName];
+            return pool.query(`UPDATE masechta_table SET summary='${masechtaLink}' WHERE masechta_table.masechta_name = '${masechtaName}';`)
+            .then(()=>{
+                console.log(`added summary for ${names[n]}`)
+                return n < names.length - 1 ? insertSummary(n + 1): insertMishnaText();
+            })
+        }
+        insertSummary(0)
+    })
+    
 }
 
 runSeed();
