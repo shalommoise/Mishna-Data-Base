@@ -1,4 +1,4 @@
-const summaryLinks = [
+const summaryLinksArr = [
     "https://time4torah.org/wp-content/uploads/2017/09/Brachos-Summaries.pdf",
     "https://time4torah.org/wp-content/uploads/2017/09/Peah-Summaries.pdf",
     "https://time4torah.org/wp-content/uploads/2017/09/Demai-Summaries.pdf",
@@ -34,5 +34,15 @@ const summaryLinks = [
 
 ];
 
+const names = ["Berakhot","Peah","Demai","Kilayim","Sheviit","Terumot","Maasrot","Maaser Sheni","Challah","Orlah","Bikkurim","Shabbat","Eruvin","Pesachim","Shekalim","Yoma","Sukkah","Beitzah","Rosh Hashanah","Taanit","Megillah","Moed Katan","Chagigah","Yevamot","Ketubot","Nedarim","Nazir","Sotah","Gittin","Kiddushin","Bava Kamma","Bava Metzia"]
+
+
+const summaryLinks = ()=>{
+obj = {};
+names.forEach((name,i)=>{
+    obj[name] = summaryLinksArr[i]
+});
+return obj;
+}
 
 module.exports = summaryLinks;
