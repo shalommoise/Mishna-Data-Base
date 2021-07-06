@@ -1,8 +1,9 @@
 const {pool, client} = require("../connection.js");
 const masechtaDetails = require("../data/mishnaIndex.json");
-const {changeSederTitle, reorderMasechtaArray , reorderNestedArrays, removeApostraphe, altMasechtaNames} = require("../utils/utils");
+const {changeSederTitle, reorderMasechtaArray , reorderNestedArrays, removeApostraphe, altMasechtaNames, linkToTitle} = require("../utils/utils");
 const {getMishnaText} = require("../data/MasechtaDetails")
 const chapterIndex = require("../data/chapterIndex.json") 
+const shiurimLinks = require("../data/shiurimLinks")
 const reorderedMasechtos = reorderMasechtaArray(masechtaDetails, "masechtaId");
 const reorderedIndex = reorderNestedArrays(chapterIndex, "masechtaId");   
 
@@ -56,7 +57,6 @@ const setMishnayosTable =()=>{
 return pool.connect()
     .then(()=>{
         const insertMasechtaIndex =(n)=>{
-            console.log(n)
              const masechtaInfo = reorderedIndex[n];
              const {masechtaName, masechtaId } = masechtaInfo[0];
              const masechtaArr = [];
@@ -112,7 +112,6 @@ const insertMishnaText = () =>{
             
         }
         insertByChapter(1)
-        .then(()=>shiurimDatabase());
     })
 }
 
@@ -143,7 +142,8 @@ const shiurimDatabase = ()=>{
                 insertShiur(mishnayos, 0)
                 .then(()=>{
                     console.log(`finished adding shiurim for Seder ${seder}`)
-                    return i < sedarim.length - 1 ? insertBySeder(i + 1) : insertMishnaText();
+                    return i < sedarim.length - 1 ? insertBySeder(i + 1) : insertShiurLinks()
+                    //  insertMishnaText();
                 })
             })
             
@@ -170,6 +170,22 @@ return pool.query(`INSERT INTO shiurim_table (start_mishna, end_mishna, number_o
     })
        
     
+}
+
+const insertShiurLinks = ()=>{
+    return pool.connect()
+    .then(()=>{
+const insertSingleLink =(n)=>{
+    const link = shiurimLinks[n];
+    const title = linkToTitle(link)
+    return pool.query(`UPDATE shiurim_table SET shiur_audio='${link}' WHERE shiur_title='${title}';`)
+    .then(()=>{
+        console.log(`inserted shiur for ${title}`)
+        return n < shiurimLinks.length - 1 && insertSingleLink (n + 1);
+    })
+}
+insertSingleLink(0)
+    })
 }
 
 runSeed();
