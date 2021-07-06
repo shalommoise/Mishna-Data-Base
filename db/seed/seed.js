@@ -1,6 +1,6 @@
 const {pool, client} = require("../connection.js");
 const masechtaDetails = require("../data/mishnaIndex.json");
-const {changeSederTitle, reorderMasechtaArray , reorderNestedArrays, removeApostraphe, altMasechtaNames} = require("../utils/utlis");
+const {changeSederTitle, reorderMasechtaArray , reorderNestedArrays, removeApostraphe, altMasechtaNames} = require("../utils/utils");
 const {getMishnaText} = require("../data/MasechtaDetails")
 const chapterIndex = require("../data/chapterIndex.json") 
 const reorderedMasechtos = reorderMasechtaArray(masechtaDetails, "masechtaId");
@@ -157,7 +157,7 @@ const shiurimDatabase = ()=>{
 let lastMishna = arr[n+3] ? arr[n+3] : arr[n+2] ? arr[n+2] : arr[n+1] ? arr[n+1]: arr[n];
 if(uniqueCase) lastMishna = arr[n+2];
 let title = `${altMasechtaNames[firstMishna.masechta_name]} ${firstMishna.perek_number}:${firstMishna.mishna_number}-${lastMishna.perek_number}:${lastMishna.mishna_number}`;
-if(firstMishna.masechta_name !== lastMishna.masechta_name) title = `${altMasechtaNames[firstMishna.masechta_name]} ${firstMishna.perek_number}:${firstMishna.mishna_number} - ${altMasechtaNames[lastMishna.masechta_name]} ${lastMishna.perek_number}:${lastMishna.mishna_number}`;
+if(firstMishna.masechta_name !== lastMishna.masechta_name) title = `${altMasechtaNames[firstMishna.masechta_name]} ${firstMishna.perek_number}:${firstMishna.mishna_number}-${altMasechtaNames[lastMishna.masechta_name]} ${lastMishna.perek_number}:${lastMishna.mishna_number}`;
 if(firstMishna.mishna_id === lastMishna.mishna_id) title = `${altMasechtaNames[firstMishna.masechta_name]} ${firstMishna.perek_number}:${firstMishna.mishna_number}`;
 return pool.query(`INSERT INTO shiurim_table (start_mishna, end_mishna, number_of_mishnayos, shiur_title)
                                       VALUES (${firstMishna.mishna_id}, ${lastMishna.mishna_id}, ${lastMishna.mishna_id - firstMishna.mishna_id + 1}, '${title}');`)
