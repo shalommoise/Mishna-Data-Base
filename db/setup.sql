@@ -32,6 +32,7 @@ CREATE TABLE masechta_table
   seder_name VARCHAR,
   number_of_perakim INT,
   number_of_misnayos INT,
+  summary VARCHAR,
   PRIMARY KEY (masechta_id),
   FOREIGN KEY(seder_name) REFERENCES sedarim_table(seder_name)
 );
