@@ -81,7 +81,7 @@ return pool.connect()
           }
           insertMishnaIndex(0, masechtaName, masechtaId ).then(()=>{
             console.log(`finished ${masechtaName}`)
-            return n < reorderedIndex.length - 1 ? insertMasechtaIndex(n + 1) : insertMishnaText(); 
+            return n < reorderedIndex.length - 1 ? insertMasechtaIndex(n + 1) : shiurimDatabase(); 
         })
         } 
     insertMasechtaIndex(0);
@@ -143,7 +143,7 @@ const shiurimDatabase = ()=>{
                 insertShiur(mishnayos, 0)
                 .then(()=>{
                     console.log(`finished adding shiurim for Seder ${seder}`)
-                    return i < sedarim.length - 1 && insertBySeder(i + 1);
+                    return i < sedarim.length - 1 ? insertBySeder(i + 1) : insertMishnaText();
                 })
             })
             
