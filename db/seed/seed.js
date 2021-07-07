@@ -155,8 +155,10 @@ const shiurimDatabase = ()=>{
                if(!arr[n]) return "finished";
                const firstMishna = arr[n];  
    const uniqueCase =  firstMishna.masechta_name === "Maaser Sheni" && firstMishna.perek_number === 1 && firstMishna.mishna_number === 7;
+   const anotherUniqueCase = firstMishna.masechta_name === "Chagigah" && firstMishna.perek_number === 3 && firstMishna.mishna_number === 4;
 let lastMishna = arr[n+3] ? arr[n+3] : arr[n+2] ? arr[n+2] : arr[n+1] ? arr[n+1]: arr[n];
 if(uniqueCase) lastMishna = arr[n+2];
+if(anotherUniqueCase) lastMishna = arr[n+4];
 let title = `${altMasechtaNames[firstMishna.masechta_name]} ${firstMishna.perek_number}:${firstMishna.mishna_number}-${lastMishna.perek_number}:${lastMishna.mishna_number}`;
 if(firstMishna.masechta_name !== lastMishna.masechta_name) title = `${altMasechtaNames[firstMishna.masechta_name]} ${firstMishna.perek_number}:${firstMishna.mishna_number}-${altMasechtaNames[lastMishna.masechta_name]} ${lastMishna.perek_number}:${lastMishna.mishna_number}`;
 if(firstMishna.mishna_id === lastMishna.mishna_id) title = `${altMasechtaNames[firstMishna.masechta_name]} ${firstMishna.perek_number}:${firstMishna.mishna_number}`;
@@ -198,8 +200,9 @@ const insertSummaryLinks = ()=>{
           const masechtaLink = summaries[masechtaName];
             return pool.query(`UPDATE masechta_table SET summary='${masechtaLink}' WHERE masechta_table.masechta_name = '${masechtaName}';`)
             .then(()=>{
-                console.log(`added summary for ${names[n]}`)
-                return n < names.length - 1 ? insertSummary(n + 1): insertMishnaText();
+                console.log(`added summary for ${names[n]}`);
+                return n < names.length - 1 ? insertSummary(n + 1): : insertMishnaText();
+                
             })
         }
         insertSummary(0)
