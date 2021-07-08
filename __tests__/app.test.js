@@ -1,6 +1,5 @@
 const request = require("supertest");
 const app = require("../app");
-const {pool} = require("../db/connection");
 
 describe("/api", ()=>{
 
@@ -17,6 +16,18 @@ describe("/api", ()=>{
                 expect(sedarim[3].seder_name).toBe("Nezikin");
                 expect(sedarim[4].seder_name).toBe("Kodshim");
                 expect(sedarim[5].seder_name).toBe("Taharos");
+            })
+        })
+        test("200 GET list of masechtos by Each Seder", ()=>{
+            return request(app)
+            .get("/api/sedarim/Zeraim")
+            .expect(200)
+            .then((res)=>{
+                const {masechtos} = res.body;
+                expect(masechtos[0].masechta_name).toBe("Brachos");
+                expect(masechtos.length).toBe(11);
+                const filter = masechtos.filter((masechta)=>masechta.seder_name = "Zeraim");
+                expect(filter.length).toBe(11);
             })
         })
     })

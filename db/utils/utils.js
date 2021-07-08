@@ -161,3 +161,11 @@ exports.linkToTitle = (link)=>{
     return title;
 
 }
+
+exports.changeMasechtaNames = (arr, altNames)=> {
+    return arr.map((masechta)=>{
+    const copy = {...masechta}
+    copy.masechta_name = altNames[copy.masechta_name]
+    return copy;
+})}
+

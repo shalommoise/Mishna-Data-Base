@@ -6,4 +6,6 @@ exports.getSedarim =(req, res, next)=>{
         res.send({sedarim})
     })
     .catch(next)
+    
 }
+
