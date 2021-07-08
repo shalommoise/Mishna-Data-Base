@@ -30,6 +30,18 @@ describe("/api", ()=>{
                 expect(filter.length).toBe(11);
             })
         })
+        test("200 GET list of masechtos by Each Seder - handle lowercase", ()=>{
+            return request(app)
+            .get("/api/sedarim/moed")
+            .expect(200)
+            .then((res)=>{
+                const {masechtos} = res.body;
+                expect(masechtos[0].masechta_name).toBe("Shabbos");
+                expect(masechtos.length).toBe(12);
+                const filter = masechtos.filter((masechta)=>masechta.seder_name = "Zeraim");
+                expect(filter.length).toBe(12);
+            })
+        })
     })
     describe("/masechtos", ()=>{
         test("200 GET masechtos", ()=>{

@@ -1,9 +1,10 @@
 
 const {sendMasechtosBySeder, sendAllMasechtos} = require("../models/masechtos.models")
-
+const {changefirstLetterToUpperCase} = require("../db/utils/utils") 
 exports.getMasechtosBySeder=(req, res, next)=>{
     const {seder} = req.params;
-    sendMasechtosBySeder(seder)
+    const sederToCaps = changefirstLetterToUpperCase(seder);
+    sendMasechtosBySeder(sederToCaps)
     .then((masechtos)=>{
         res.send({masechtos})
     })
