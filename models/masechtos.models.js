@@ -11,5 +11,14 @@ exports.sendMasechtosBySeder =(seder)=>pool.connect()
         })
 
 
+exports.sendAllMasechtos =()=>pool.connect()
+.then(()=>pool.query("SELECT * FROM masechta_table ORDER BY masechta_id;"))
+.then((res)=>{
+    const {rows} = res;
+ const newRows = changeMasechtaNames(rows,altMasechtaNames);   
+      return newRows;
+})
+
+
 
 

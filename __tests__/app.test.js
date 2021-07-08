@@ -31,4 +31,16 @@ describe("/api", ()=>{
             })
         })
     })
+    describe("/masechtos", ()=>{
+        test("200 GET masechtos", ()=>{
+            return request(app)
+            .get("/api/masechtos")
+            .expect(200)
+            .then((res)=>{
+                const {masechtos} = res.body;
+                expect(masechtos[0].masechta_name).toBe("Brachos");
+                expect(masechtos.length).toBe(63)
+            })
+        })
+    })
 })
