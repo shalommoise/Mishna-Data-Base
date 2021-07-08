@@ -1,4 +1,4 @@
-const {reorderMasechtaArray, removeApostraphe, addApostraphe, linkToTitle} = require("../db/utils/utils");
+const {reorderMasechtaArray, removeApostraphe, addApostraphe,changefirstLetterToUpperCase, linkToTitle} = require("../db/utils/utils");
 const masechtaDetails = require("../db/data/mishnaIndex.json")
 describe("reorderMasechtaArray", ()=>{
     test("returns empty array", ()=>{
@@ -150,4 +150,14 @@ describe("removeApostraphe", ()=>{
                 expect(linkToTitle(link)).toBe(titles[index])
             })
         })
+  })
+
+  describe("changefirstLetterToUpperCase", ()=>{
+      test("empty string returns empty string", ()=>{
+expect(changefirstLetterToUpperCase()).toBe("");
+expect(changefirstLetterToUpperCase("")).toBe("");
+      })
+test("change first letter to uppercase", ()=>{
+    expect(changefirstLetterToUpperCase("shalom")).toBe("Shalom");
+})
   })

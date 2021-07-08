@@ -169,3 +169,12 @@ exports.changeMasechtaNames = (arr, altNames)=> {
     return copy;
 })}
 
+exports.changefirstLetterToUpperCase =(str)=>{
+    if(!str) return "";
+    const arr = str.split("");
+    const firstLetter = arr.shift();
+    const captilised = firstLetter.toUpperCase();
+    arr.unshift(captilised);
+    const finalStr = arr.join("");
+    return finalStr;
+}
