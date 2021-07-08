@@ -54,5 +54,29 @@ describe("/api", ()=>{
                 expect(masechtos.length).toBe(63)
             })
         })
+        test("200 GET single Masechta", ()=>{
+            return request(app)
+            .get("/api/masechtos/summary/Shekalim")
+            .expect(200)
+            .then((res)=>{
+               
+                const {masechta} = res.body;
+                expect(masechta.masechta_name).toBe("Shekalim");
+                expect(masechta.number_of_perakim).toBe(8);
+                expect(masechta.number_of_misnayos).toBe(52)
+            })
+        })
+        test("200 GET single Masechta - use alt name", ()=>{
+            return request(app)
+            .get("/api/masechtos/summary/brachos")
+            .expect(200)
+            .then((res)=>{
+               
+                const {masechta} = res.body;
+                expect(masechta.masechta_name).toBe("Brachos");
+                expect(masechta.number_of_perakim).toBe(9);
+                expect(masechta.number_of_misnayos).toBe(57)
+            })
+        })
     })
 })
