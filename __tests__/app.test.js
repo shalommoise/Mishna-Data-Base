@@ -80,5 +80,19 @@ describe("/api", ()=>{
         })
         // get mishnayos by masechta, by perek, by mishna
         //get shiurim by masechta
+        test("200 GET mishnayos of a single masechta", ()=>{
+            return request(app)
+            .get("/api/masechtos/kilayim/mishnayos/")
+            .expect(200)
+            .then((res)=>{
+                const {mishnayos} = res.body;
+                expect(mishnayos.length).toBe(77);
+                expect(mishnayos[76].perek_number).toBe(9);
+                mishnayos.forEach((mishna)=>{
+                    expect(mishna.masechta_name).toBe("Kilayim")
+                })
+            })
+
+        })
     })
 })
