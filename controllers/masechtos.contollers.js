@@ -29,3 +29,4 @@ exports.getSingleMasechtaDetails  = (req,res,next) => {
     })
     .catch(next)
 }
+

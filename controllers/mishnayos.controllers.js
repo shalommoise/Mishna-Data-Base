@@ -1,5 +1,5 @@
 
-const {sendMultipleMishnayos} = require("../models/mishnayos.models")
+const {sendMultipleMishnayos, sendMishnayosById} = require("../models/mishnayos.models")
 const {changefirstLetterToUpperCase} = require("../db/utils/utils") 
 exports.getMultipleMishnayos =(req,res,next)=>{
     const {masechta} = req.params;
@@ -9,4 +9,13 @@ exports.getMultipleMishnayos =(req,res,next)=>{
     .then((mishnayos)=>{
         res.send({mishnayos})
     })
+}
+
+exports.getMishnayosById = (req,res,next)=>{
+    const {start, end} = req.query;
+    sendMishnayosById(start, end)
+    .then((mishnayos)=>{
+        res.send({mishnayos})
+    })
+    
 }

@@ -78,8 +78,7 @@ describe("/api", ()=>{
                 expect(masechta.number_of_misnayos).toBe(57)
             })
         })
-        // get mishnayos by masechta, by perek, by mishna
-        //get shiurim by masechta
+        
         test("200 GET mishnayos of a single masechta", ()=>{
             return request(app)
             .get("/api/masechtos/kilayim/mishnayos/")
@@ -125,6 +124,36 @@ describe("/api", ()=>{
             
             })
 
+        })
+        
+    
+    })
+    describe.only("/mishnayos", ()=>{
+        test("200 GET mishna by mishna_id", ()=>{
+            return request(app)
+            .get("/api/mishnayos/?start=6")
+            .expect(200)
+            .then((res)=>{
+                const {mishnayos} = res.body;
+                expect(mishnayos.length).toBe(1);
+                expect(mishnayos[0].masechta_name).toBe("Brachos");
+                expect(mishnayos[0].perek_number).toBe(2);
+                expect(mishnayos[0].mishna_number).toBe(1);
+            })
+        })
+        test("200 GET mishna by mishna_id", ()=>{
+            return request(app)
+            .get("/api/mishnayos/?start=6&end=9")
+            .expect(200)
+            .then((res)=>{
+                const {mishnayos} = res.body;
+                expect(mishnayos.length).toBe(4);
+                expect(mishnayos[0].masechta_name).toBe("Brachos");
+                expect(mishnayos[0].perek_number).toBe(2);
+                expect(mishnayos[0].mishna_number).toBe(1);
+                expect(mishnayos[3].perek_number).toBe(2);
+                expect(mishnayos[3].mishna_number).toBe(4);
+            })
         })
     })
 })
