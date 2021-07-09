@@ -56,7 +56,7 @@ describe("/api", ()=>{
         })
         test("200 GET single Masechta", ()=>{
             return request(app)
-            .get("/api/masechtos/summary/Shekalim")
+            .get("/api/masechtos/Shekalim/summary/")
             .expect(200)
             .then((res)=>{
                
@@ -68,7 +68,7 @@ describe("/api", ()=>{
         })
         test("200 GET single Masechta - use alt name", ()=>{
             return request(app)
-            .get("/api/masechtos/summary/brachos")
+            .get("/api/masechtos/brachos/summary/")
             .expect(200)
             .then((res)=>{
                
@@ -78,5 +78,7 @@ describe("/api", ()=>{
                 expect(masechta.number_of_misnayos).toBe(57)
             })
         })
+        // get mishnayos by masechta, by perek, by mishna
+        //get shiurim by masechta
     })
 })
