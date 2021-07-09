@@ -1,8 +1,20 @@
 const {pool, client} = require("../db/connection");
+const {altMasechtaNames, changeMasechtaNames, switchAltName} = require("../db/utils/utils");
 
-exports.sendMultipleMishnayos = (masechta)=>pool.connect()
-.then(()=>pool.query(`SELECT * FROM mishna_table WHERE masechta_name='${masechta}';`))
+
+
+exports.sendMultipleMishnayos = (masechta, perek, mishna)=>pool.connect()
+.then(()=>{
+    const checkifAltName = Object.keys(altMasechtaNames).some((name)=>name===masechta);
+    const masechtaName = checkifAltName ? masechta : switchAltName(altMasechtaNames)[masechta];
+    let query =  '';
+    if(perek) query = ` AND perek_number = ${perek}`;
+    if(mishna) query = ` AND perek_number = ${perek} AND mishna_number = ${mishna}`;
+    
+    return pool.query(`SELECT * FROM mishna_table WHERE masechta_name='${masechtaName}' ${query};`)
+})
 .then((res)=>{
 const {rows} = res;
-return rows;
+const newRows = changeMasechtaNames(rows,altMasechtaNames)
+return newRows;
 })

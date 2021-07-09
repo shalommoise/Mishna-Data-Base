@@ -93,6 +93,38 @@ describe("/api", ()=>{
                 })
             })
 
+
+        })
+        test("200 GET Mishnayos from a single perek", ()=>{
+            return request(app)
+            .get("/api/masechtos/menachos/mishnayos?perek=2")
+            .expect(200)
+            .then((res)=>{
+                const {mishnayos} = res.body;
+                expect(mishnayos.length).toBe(5);
+              
+                mishnayos.forEach((mishna)=>{
+                    expect(mishna.masechta_name).toBe("Menachos");
+                    expect(mishna.perek_number).toBe(2);
+                })
+            })
+
+        })
+        test("200 GET Mishnayos from a single mishna", ()=>{
+            return request(app)
+            .get("/api/masechtos/menachos/mishnayos?perek=2&mishna=3")
+            .expect(200)
+            .then((res)=>{
+                const {mishnayos} = res.body;
+                expect(mishnayos.length).toBe(1);
+              
+              
+                    expect(mishnayos[0].masechta_name).toBe("Menachos");
+                    expect(mishnayos[0].perek_number).toBe(2);
+                    expect(mishnayos[0].mishna_number).toBe(3);
+            
+            })
+
         })
     })
 })
