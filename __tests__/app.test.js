@@ -128,7 +128,7 @@ describe("/api", ()=>{
         
     
     })
-    describe.only("/mishnayos", ()=>{
+    describe("/mishnayos", ()=>{
         test("200 GET mishna by mishna_id", ()=>{
             return request(app)
             .get("/api/mishnayos/?start=6")
@@ -153,6 +153,17 @@ describe("/api", ()=>{
                 expect(mishnayos[0].mishna_number).toBe(1);
                 expect(mishnayos[3].perek_number).toBe(2);
                 expect(mishnayos[3].mishna_number).toBe(4);
+            })
+        })
+    })
+    describe.only("/shiurim", ()=>{
+        test("200 GET shiur by shiur_id", ()=>{
+            return request(app)
+            .get("/api/shiurim/7")
+            .expect(200)
+            .then((res)=>{
+                const {shiur} = res.body;
+                expect(shiur.shiur_title).toBe("Brachos 4:6-5:2");
             })
         })
     })
