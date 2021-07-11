@@ -156,7 +156,7 @@ describe("/api", ()=>{
             })
         })
     })
-    describe.only("/shiurim", ()=>{
+    describe("/shiurim", ()=>{
         test("200 GET shiur by shiur_id", ()=>{
             return request(app)
             .get("/api/shiurim/7")
@@ -164,6 +164,33 @@ describe("/api", ()=>{
             .then((res)=>{
                 const {shiur} = res.body;
                 expect(shiur.shiur_title).toBe("Brachos 4:6-5:2");
+            })
+        })
+    })
+    describe.only("/siyumim", ()=>{
+        test("201 POST siyum admin ", ()=>{
+            return request(app)
+            .post("/api/siyumim/")
+            .send({
+                admin_email: "mshalom689@gmail.com",
+                admin_fname: "Shalom",
+                admin_sname: "Moise",
+                siyum_name: "Yitzchak Ben Avraham",
+                finish_date: "30/08/21"
+            })
+            .expect(201)
+            .then((res)=>{
+                const {siyumDetails} = res.body;
+                const { admin_email,
+                admin_fname,
+                admin_sname,
+                siyum_name ,
+                finish_date} = siyumDetails;
+                expect(admin_email).toBe("mshalom689@gmail.com");
+                expect(admin_fname).toBe("Shalom");
+                expect(admin_sname).toBe("Moise");
+                expect(siyum_name).toBe("Yitzchak Ben Avraham");
+                expect(finish_date).toBe("30/08/21");
             })
         })
     })
