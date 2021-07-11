@@ -193,5 +193,17 @@ describe("/api", ()=>{
                 expect(finish_date).toBe("30/08/21");
             })
         })
+        test("200 GET ALL siyumim with isOpen = true", ()=>{
+            return request(app)
+            .get("/api/siyumim/")
+            .expect(200)
+            .then((res)=>{
+                const {siyumim} = res.body;
+            expect(siyumim.length > 0).toBe(true)
+                siyumim.forEach((siyum)=>{
+                    expect(siyum.isOpen).toBe(true)
+                })
+            })
+        })
     })
 })

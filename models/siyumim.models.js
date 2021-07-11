@@ -11,4 +11,21 @@ exports.createSiyum = (siyumInfo)=> pool.connect()
                                      const [result] = rows;
                                      return result;
                                  })
+                                 .then(()=>{
+                                     console.log(admin_email)
+                                 })
          }).catch((err)=>console.log(err))
+
+         exports.sendSiyumim =()=>  pool.connect()
+                .then(()=>{
+                    return pool.query("SELECT * FROM siyum_makers WHERE isOpen = 'true';")
+                    .then((res)=>{
+                        const {rows} = res;
+                        const results = rows.map((row)=>{
+                            const copy = {...row};
+                            copy.isOpen = copy.isOpen = "true" ? true : false;
+                            return copy;  
+                        })
+                        return results;
+                    })
+                })
