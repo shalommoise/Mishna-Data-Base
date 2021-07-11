@@ -75,5 +75,6 @@ CREATE TABLE siyum_makers
   siyum_type VARCHAR DEFAULT 'Shloshim',
   date_made TIMESTAMP,
   finish_date VARCHAR NOT NULL,
-  msg VARCHAR
+  msg VARCHAR,
+  isOpen VARCHAR  DEFAULT 'yes'
 ); 
