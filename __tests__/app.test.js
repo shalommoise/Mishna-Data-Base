@@ -168,7 +168,7 @@ describe("/api", ()=>{
         })
     })
     describe.only("/siyumim", ()=>{
-        test("201 POST siyum admin ", ()=>{
+        test.only("201 POST siyum admin ", ()=>{
             return request(app)
             .post("/api/siyumim/")
             .send({
@@ -222,7 +222,7 @@ describe("/api", ()=>{
                 .expect(200)
             })
         })
-        test.only("201 POST sign up for Masechta", ()=>{
+        test("201 POST sign up for Masechta", ()=>{
             return request(app)
             .post("/api/siyumim/1")
             .send({
