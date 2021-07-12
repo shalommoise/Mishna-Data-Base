@@ -201,7 +201,7 @@ const insertSummaryLinks = ()=>{
             return pool.query(`UPDATE masechta_table SET summary='${masechtaLink}' WHERE masechta_table.masechta_name = '${masechtaName}';`)
             .then(()=>{
                 console.log(`added summary for ${names[n]}`);
-                return n < names.length - 1 ? insertSummary(n + 1): : insertMishnaText();
+                return n < names.length - 1 ? insertSummary(n + 1) : insertMishnaText();
                 
             })
         }
