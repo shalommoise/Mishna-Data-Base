@@ -205,5 +205,22 @@ describe("/api", ()=>{
                 })
             })
         })
+        test.only("200 GET TABLE for siyum", ()=>{
+            return request(app)
+            .post("/api/siyumim/")
+            .send({
+                admin_email: "mshalom689@gmail.com",
+                admin_fname: "Shalom",
+                admin_sname: "Moise",
+                siyum_name: "Yitzchak Ben Avraham",
+                finish_date: "30/08/21"
+            })
+            .expect(201)
+            .then(()=>{
+                return request(app)
+                .get("/api/siyumim/1")
+                .expect(200)
+            })
+        })
     })
 })

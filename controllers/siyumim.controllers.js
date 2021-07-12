@@ -1,4 +1,4 @@
-const {createSiyum, sendSiyumim} = require("../models/siyumim.models")
+const {createSiyum, sendSiyumim, sendSingleSiyum} = require("../models/siyumim.models")
 
 exports.postSiyum =(req,res,next)=>{
     createSiyum(req.body)
@@ -13,4 +13,13 @@ exports.getSiyumim =(req,res,next)=>{
     .then((siyumim)=>{
     res.send({siyumim})
     })
+}
+
+exports.getSingleSiyum = (req,res,next)=>{
+   const {admin_id} = req.params;
+   sendSingleSiyum(admin_id)
+   .then((siyumList)=>{
+       res.send({siyumList})
+   })
+
 }
