@@ -1,38 +1,19 @@
 const nodemailer = require('nodemailer');
-const Time4MishnaEmail = require("./emailServer");
+const  {Time4MishnaEmail, transporter} = require("./emailServer");
 
 
 
-const receiveSiyumDetails =(siyumDets)=>{
-    console.log(siyumDets.siyumDetails);
-}
-
-// transporter.sendMail(completeEmail, function(error, info){
-//     if (error) {
-//       console.log("error: " , error);
-//     } else {
-//       console.log('Email sent: ' + info.response);
-//     }
-//   });
-
-const state = {
-    admin_id: 0,
-admin_email: "",
-admin_fname: "",
-admin_sname: "",
-siyum_name: "",
-siyum_type: "",
-date_made: null,
-finish_date: "",
-msg: null,
-isOpen: true
-};
 
 
-const completeEmail = {
+
+const completeEmail = (siyumDets) =>{
+   
+    const {admin_id, admin_email, admin_fname, admin_sname, siyum_name, siyum_type, finish_date, msg, isOpen}= siyumDets
+
+    return {
     from: Time4MishnaEmail,
-    to: state.admin_email,
-    subject: `Siyum for ${state.siyum_name}`,
+    to: admin_email,
+    subject: `Siyum for ${siyum_name}`,
     html: `<!doctype html>
     <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
         <head>
@@ -40,7 +21,7 @@ const completeEmail = {
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>*|MC:SUBJECT|*</title>
+            <title>Siyum for ${siyum_name}</title>
             
         <style type="text/css">
             p{
@@ -526,12 +507,12 @@ const completeEmail = {
             <tr>
                 <td valign="top" width="100%"><br>
                 <span style="font-size:16px"><span style="font-family:georgia,times,times new roman,serif">&nbsp;<br>
-                Hi ${state.admin_fname},
+                Hi ${admin_fname},
                 
-                Thank you for making a siyum for ${state.siyum_name}.<br>
+                Thank you for making a siyum for ${siyum_name}.<br>
                 <br>
                 Here is the link for people to sign up for mishnayos.<br>
-                     <a href="http://localhost:9090/api/siyumim/${state.admin_id}">Shloshim Sign Up Link</a>
+                     <a href="http://localhost:9090/api/siyumim/${admin_id}">Shloshim Sign Up Link</a>
                 <br>
                 &nbsp;<br>
                 
@@ -864,7 +845,29 @@ const completeEmail = {
             </center>
         </body>
     </html>
-    `
+    `}
   };
+
+
+  const receiveSiyumDetails =(siyumDets)=>{
+    const email = completeEmail(siyumDets.siyumDetails);
+    console.log(email.from , email.to)
+    sendEmail(email)
+    
+ 
+}
+
+const sendEmail = (mailInfo)=>{
+  transporter.sendMail(mailInfo, function(error, info){
+    if (error) {
+      console.log("error: " , error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+}
+
+
+
 
   module.exports = {receiveSiyumDetails}
