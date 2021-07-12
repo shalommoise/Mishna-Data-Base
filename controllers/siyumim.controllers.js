@@ -1,9 +1,12 @@
 const {createSiyum, sendSiyumim, sendSingleSiyum, signUp} = require("../models/siyumim.models")
 const {altMasechtaNames, changeMasechtaNames, switchAltName} = require("../db/utils/utils");
-const {changefirstLetterToUpperCase} = require("../db/utils/utils")
+const {changefirstLetterToUpperCase} = require("../db/utils/utils");
+const {receiveSiyumDetails}= require("../emails/adminEmail.js")
+
 exports.postSiyum =(req,res,next)=>{
     createSiyum(req.body)
     .then((siyumDetails)=>{
+        receiveSiyumDetails({siyumDetails})
         res.status(201).send({siyumDetails})
     })
 

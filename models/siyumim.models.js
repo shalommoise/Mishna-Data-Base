@@ -10,25 +10,11 @@ exports.createSiyum = (siyumInfo)=> pool.connect()
                                  .then((res)=>{
                                      const {rows} = res;
                                      const [result] = rows;
-                                    
+                                     const {admin_id} = result;
+                                     createSiyum(admin_id)
                                      return result;
                                  })
-                                 .then((res)=>{
-                                    const {admin_id} = res;
-                                   return pool.query(`CREATE TABLE Siyum_number_${admin_id} (
-                                       user_id SERIAL PRIMARY KEY,
-                                       user_email VARCHAR NOT NULL,
-                                       user_fname VARCHAR NOT NULL,
-                                       user_sname VARCHAR NOT NULL,
-                                       masechta VARCHAR,
-                                       start_mishna INT,
-                                       end_mishna INT,
-                                       reminder VARCHAR DEFAULT 'justBefore',
-                                       FOREIGN KEY(masechta) REFERENCES masechta_table(masechta_name),
-                                       FOREIGN KEY(start_mishna) REFERENCES mishna_table(mishna_id),
-                                       FOREIGN KEY(end_mishna) REFERENCES mishna_table(mishna_id)
-                                   )`)
-                                 })
+                                 
          }).catch((err)=>console.log(err));
 
   exports.sendSiyumim =()=>  pool.connect()
@@ -71,4 +57,21 @@ exports.signUp = (admin_id, userDetails) => {
            return results;
        })
        .catch((err)=>console.log(err))
+    }
+
+
+    const createSiyum =(id)=>{
+        return pool.query(`CREATE TABLE Siyum_number_${id} (
+            user_id SERIAL PRIMARY KEY,
+            user_email VARCHAR NOT NULL,
+            user_fname VARCHAR NOT NULL,
+            user_sname VARCHAR NOT NULL,
+            masechta VARCHAR,
+            start_mishna INT,
+            end_mishna INT,
+            reminder VARCHAR DEFAULT 'justBefore',
+            FOREIGN KEY(masechta) REFERENCES masechta_table(masechta_name),
+            FOREIGN KEY(start_mishna) REFERENCES mishna_table(mishna_id),
+            FOREIGN KEY(end_mishna) REFERENCES mishna_table(mishna_id)
+        )`)
     }
