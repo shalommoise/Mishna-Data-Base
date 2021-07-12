@@ -1,4 +1,5 @@
 const {pool, client} = require("../db/connection");
+const {altMasechtaNames} = require("../db/utils/utils")
 
 
 exports.createSiyum = (siyumInfo)=> pool.connect()
@@ -28,7 +29,8 @@ exports.createSiyum = (siyumInfo)=> pool.connect()
                                        FOREIGN KEY(end_mishna) REFERENCES mishna_table(mishna_id)
                                    )`)
                                  })
-         }).catch((err)=>console.log(err))
+         }).catch((err)=>console.log(err));
+
   exports.sendSiyumim =()=>  pool.connect()
           .then(()=>{
          return pool.query("SELECT * FROM siyum_makers WHERE isOpen = 'true';")
@@ -51,3 +53,22 @@ exports.createSiyum = (siyumInfo)=> pool.connect()
                     return rows;
                 })
            })
+
+
+exports.signUp = (admin_id, userDetails) => {
+
+    return pool.connect()
+       .then(()=>{
+        const {masechta, user_email, user_fname, user_sname, start_mishna, end_mishna } = userDetails;
+        return pool.query(`INSERT INTO Siyum_number_${admin_id} (user_email, user_fname, user_sname, masechta) 
+        VALUES ('${user_email}', '${user_fname}', '${user_sname}', '${masechta}') RETURNING *;`)
+       })
+       .then((res)=>{
+  
+           const {rows} = res;
+           const [results] = rows;
+          results.masechta = altMasechtaNames[results.masechta]
+           return results;
+       })
+       .catch((err)=>console.log(err))
+    }

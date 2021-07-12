@@ -1,7 +1,7 @@
 const siyumimRouter = require("express").Router();
-const {postSiyum, getSiyumim, getSingleSiyum} = require("../controllers/siyumim.controllers")
+const {postSiyum, getSiyumim, getSingleSiyum, postMasechtaLearn} = require("../controllers/siyumim.controllers")
 
 siyumimRouter.route("/").post(postSiyum).get(getSiyumim);
-siyumimRouter.route("/:admin_id").get(getSingleSiyum);
+siyumimRouter.route("/:admin_id").get(getSingleSiyum).post(postMasechtaLearn)
 
 module.exports = siyumimRouter;

@@ -205,7 +205,7 @@ describe("/api", ()=>{
                 })
             })
         })
-        test.only("200 GET TABLE for siyum", ()=>{
+        test("200 GET TABLE for siyum", ()=>{
             return request(app)
             .post("/api/siyumim/")
             .send({
@@ -220,6 +220,25 @@ describe("/api", ()=>{
                 return request(app)
                 .get("/api/siyumim/1")
                 .expect(200)
+            })
+        })
+        test.only("201 POST sign up for Masechta", ()=>{
+            return request(app)
+            .post("/api/siyumim/1")
+            .send({
+                user_email: "mshalom689@gmail.com",
+                user_fname: "Shalom",
+                user_sname: "Moise",
+                masechta: "Eiruvin",
+            })
+            .expect(201)
+            .then((res)=>{
+                const {user_email, user_fname, user_sname, masechta} = res.body.user;
+                
+                expect(user_email).toBe("mshalom689@gmail.com");
+                expect(user_fname).toBe("Shalom");
+                expect(user_sname).toBe("Moise");
+                expect(masechta).toBe("Eiruvin");
             })
         })
     })
