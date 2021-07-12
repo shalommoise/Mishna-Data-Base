@@ -27,7 +27,7 @@ VALUES
 CREATE TABLE masechta_table
 (
   masechta_id INT,
-  masechta_name VARCHAR,
+  masechta_name VARCHAR UNIQUE,
   masechta_name_he VARCHAR,
   seder_name VARCHAR,
   number_of_perakim INT,
