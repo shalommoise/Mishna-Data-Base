@@ -1,4 +1,9 @@
-<!doctype html>
+const adminEmail = (data)=>{
+    const {admin_id, admin_email, admin_fname, admin_sname, siyum_name, siyum_type, finish_date, msg, isOpen} = data;
+return  {
+    to: admin_email,
+    subject: `Siyum for ${siyum_name}`,
+    html:`<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
     <head>
   
@@ -8,407 +13,407 @@
         <title>Siyum for ${siyum_name}</title>
         
     <style type="text/css">
-		p{
-			margin:10px 0;
-			padding:0;
-		}
-		table{
-			border-collapse:collapse;
-		}
-		h1,h2,h3,h4,h5,h6{
-			display:block;
-			margin:0;
-			padding:0;
-		}
-		img,a img{
-			border:0;
-			height:auto;
-			outline:none;
-			text-decoration:none;
-		}
-		body,#bodyTable,#bodyCell{
-			height:100%;
-			margin:0;
-			padding:0;
-			width:100%;
-		}
-		.mcnPreviewText{
-			display:none !important;
-		}
-		#outlook a{
-			padding:0;
-		}
-		img{
-			-ms-interpolation-mode:bicubic;
-		}
-		table{
-			mso-table-lspace:0pt;
-			mso-table-rspace:0pt;
-		}
-		.ReadMsgBody{
-			width:100%;
-		}
-		.ExternalClass{
-			width:100%;
-		}
-		p,a,li,td,blockquote{
-			mso-line-height-rule:exactly;
-		}
-		a[href^=tel],a[href^=sms]{
-			color:inherit;
-			cursor:default;
-			text-decoration:none;
-		}
-		p,a,li,td,body,table,blockquote{
-			-ms-text-size-adjust:100%;
-			-webkit-text-size-adjust:100%;
-		}
-		.ExternalClass,.ExternalClass p,.ExternalClass td,.ExternalClass div,.ExternalClass span,.ExternalClass font{
-			line-height:100%;
-		}
-		a[x-apple-data-detectors]{
-			color:inherit !important;
-			text-decoration:none !important;
-			font-size:inherit !important;
-			font-family:inherit !important;
-			font-weight:inherit !important;
-			line-height:inherit !important;
-		}
-		.templateContainer{
-			max-width:600px !important;
-		}
-		a.mcnButton{
-			display:block;
-		}
-		.mcnImage,.mcnRetinaImage{
-			vertical-align:bottom;
-		}
-		.mcnTextContent{
-			word-break:break-word;
-		}
-		.mcnTextContent img{
-			height:auto !important;
-		}
-		.mcnDividerBlock{
-			table-layout:fixed !important;
-		}
+        p{
+            margin:10px 0;
+            padding:0;
+        }
+        table{
+            border-collapse:collapse;
+        }
+        h1,h2,h3,h4,h5,h6{
+            display:block;
+            margin:0;
+            padding:0;
+        }
+        img,a img{
+            border:0;
+            height:auto;
+            outline:none;
+            text-decoration:none;
+        }
+        body,#bodyTable,#bodyCell{
+            height:100%;
+            margin:0;
+            padding:0;
+            width:100%;
+        }
+        .mcnPreviewText{
+            display:none !important;
+        }
+        #outlook a{
+            padding:0;
+        }
+        img{
+            -ms-interpolation-mode:bicubic;
+        }
+        table{
+            mso-table-lspace:0pt;
+            mso-table-rspace:0pt;
+        }
+        .ReadMsgBody{
+            width:100%;
+        }
+        .ExternalClass{
+            width:100%;
+        }
+        p,a,li,td,blockquote{
+            mso-line-height-rule:exactly;
+        }
+        a[href^=tel],a[href^=sms]{
+            color:inherit;
+            cursor:default;
+            text-decoration:none;
+        }
+        p,a,li,td,body,table,blockquote{
+            -ms-text-size-adjust:100%;
+            -webkit-text-size-adjust:100%;
+        }
+        .ExternalClass,.ExternalClass p,.ExternalClass td,.ExternalClass div,.ExternalClass span,.ExternalClass font{
+            line-height:100%;
+        }
+        a[x-apple-data-detectors]{
+            color:inherit !important;
+            text-decoration:none !important;
+            font-size:inherit !important;
+            font-family:inherit !important;
+            font-weight:inherit !important;
+            line-height:inherit !important;
+        }
+        .templateContainer{
+            max-width:600px !important;
+        }
+        a.mcnButton{
+            display:block;
+        }
+        .mcnImage,.mcnRetinaImage{
+            vertical-align:bottom;
+        }
+        .mcnTextContent{
+            word-break:break-word;
+        }
+        .mcnTextContent img{
+            height:auto !important;
+        }
+        .mcnDividerBlock{
+            table-layout:fixed !important;
+        }
 
-		body,#bodyTable{
-			background-color:#FAFAFA;
-		}
+        body,#bodyTable{
+            background-color:#FAFAFA;
+        }
 
-		#bodyCell{
-			border-top:0;
-		}
+        #bodyCell{
+            border-top:0;
+        }
 
-		h1{
-			color:#202020;
-			font-family:Helvetica;
-			font-size:26px;
-			font-style:normal;
-			font-weight:bold;
-			line-height:125%;
-			letter-spacing:normal;
-			text-align:left;
-		}
+        h1{
+            color:#202020;
+            font-family:Helvetica;
+            font-size:26px;
+            font-style:normal;
+            font-weight:bold;
+            line-height:125%;
+            letter-spacing:normal;
+            text-align:left;
+        }
 
-		h2{
-			color:#202020;
-			font-family:Helvetica;
-			font-size:22px;
-			font-style:normal;
-			font-weight:bold;
-			line-height:125%;
-			letter-spacing:normal;
-			text-align:left;
-		}
+        h2{
+            color:#202020;
+            font-family:Helvetica;
+            font-size:22px;
+            font-style:normal;
+            font-weight:bold;
+            line-height:125%;
+            letter-spacing:normal;
+            text-align:left;
+        }
 
-		h3{
-			color:#202020;
-			font-family:Helvetica;
-			font-size:20px;
-			font-style:normal;
-			font-weight:bold;
-			line-height:125%;
-			letter-spacing:normal;
-			text-align:left;
-		}
+        h3{
+            color:#202020;
+            font-family:Helvetica;
+            font-size:20px;
+            font-style:normal;
+            font-weight:bold;
+            line-height:125%;
+            letter-spacing:normal;
+            text-align:left;
+        }
 
-		h4{
-			color:#202020;
-			font-family:Helvetica;
-			font-size:18px;
-			font-style:normal;
-			font-weight:bold;
-			line-height:125%;
-			letter-spacing:normal;
-			text-align:left;
-		}
+        h4{
+            color:#202020;
+            font-family:Helvetica;
+            font-size:18px;
+            font-style:normal;
+            font-weight:bold;
+            line-height:125%;
+            letter-spacing:normal;
+            text-align:left;
+        }
 
-		#templatePreheader{
-			background-color:#FAFAFA;
-			background-image:none;
-			background-repeat:no-repeat;
-			background-position:center;
-			background-size:cover;
-			border-top:0;
-			border-bottom:0;
-			padding-top:9px;
-			padding-bottom:9px;
-		}
+        #templatePreheader{
+            background-color:#FAFAFA;
+            background-image:none;
+            background-repeat:no-repeat;
+            background-position:center;
+            background-size:cover;
+            border-top:0;
+            border-bottom:0;
+            padding-top:9px;
+            padding-bottom:9px;
+        }
 
-		#templatePreheader .mcnTextContent,#templatePreheader .mcnTextContent p{
-			color:#656565;
-			font-family:Helvetica;
-			font-size:12px;
-			line-height:150%;
-			text-align:left;
-		}
-	
-		#templatePreheader .mcnTextContent a,#templatePreheader .mcnTextContent p a{
-			color:#656565;
-			font-weight:normal;
-			text-decoration:underline;
-		}
-	
-		#templateHeader{
-			background-color:#FFFFFF;
-			background-image:none;
-			background-repeat:no-repeat;
-			background-position:center;
-			background-size:cover;
-			border-top:0;
-			border-bottom:0;
-			padding-top:9px;
-			padding-bottom:0;
-		}
+        #templatePreheader .mcnTextContent,#templatePreheader .mcnTextContent p{
+            color:#656565;
+            font-family:Helvetica;
+            font-size:12px;
+            line-height:150%;
+            text-align:left;
+        }
+    
+        #templatePreheader .mcnTextContent a,#templatePreheader .mcnTextContent p a{
+            color:#656565;
+            font-weight:normal;
+            text-decoration:underline;
+        }
+    
+        #templateHeader{
+            background-color:#FFFFFF;
+            background-image:none;
+            background-repeat:no-repeat;
+            background-position:center;
+            background-size:cover;
+            border-top:0;
+            border-bottom:0;
+            padding-top:9px;
+            padding-bottom:0;
+        }
 
-		#templateHeader .mcnTextContent,#templateHeader .mcnTextContent p{
-			color:#202020;
-			font-family:Helvetica;
-			font-size:16px;
-			line-height:150%;
-			text-align:left;
-		}
+        #templateHeader .mcnTextContent,#templateHeader .mcnTextContent p{
+            color:#202020;
+            font-family:Helvetica;
+            font-size:16px;
+            line-height:150%;
+            text-align:left;
+        }
 
-		#templateHeader .mcnTextContent a,#templateHeader .mcnTextContent p a{
-			color:#007C89;
-			font-weight:normal;
-			text-decoration:underline;
-		}
+        #templateHeader .mcnTextContent a,#templateHeader .mcnTextContent p a{
+            color:#007C89;
+            font-weight:normal;
+            text-decoration:underline;
+        }
 
-		#templateBody{
-			background-color:#FFFFFF;
-			background-image:none;
-			background-repeat:no-repeat;
-			background-position:center;
-			background-size:cover;
-			border-top:0;
-			border-bottom:0;
-			padding-top:9px;
-			padding-bottom:9px;
-		}
+        #templateBody{
+            background-color:#FFFFFF;
+            background-image:none;
+            background-repeat:no-repeat;
+            background-position:center;
+            background-size:cover;
+            border-top:0;
+            border-bottom:0;
+            padding-top:9px;
+            padding-bottom:9px;
+        }
 
-		#templateBody .mcnTextContent,#templateBody .mcnTextContent p{
-			color:#202020;
-			font-family:Helvetica;
-			font-size:16px;
-			line-height:150%;
-			text-align:left;
-		}
+        #templateBody .mcnTextContent,#templateBody .mcnTextContent p{
+            color:#202020;
+            font-family:Helvetica;
+            font-size:16px;
+            line-height:150%;
+            text-align:left;
+        }
 
-		#templateBody .mcnTextContent a,#templateBody .mcnTextContent p a{
-			color:#007C89;
-			font-weight:normal;
-			text-decoration:underline;
-		}
+        #templateBody .mcnTextContent a,#templateBody .mcnTextContent p a{
+            color:#007C89;
+            font-weight:normal;
+            text-decoration:underline;
+        }
 
-		#templateFooter{
-			background-color:#FAFAFA;
-			background-image:none;
-			background-repeat:no-repeat;
-			background-position:center;
-			background-size:cover;
-			border-top:0;
-			border-bottom:0;
-			padding-top:9px;
-			padding-bottom:9px;
-		}
-	
-		#templateFooter .mcnTextContent,#templateFooter .mcnTextContent p{
-			color:#656565;
-			font-family:Helvetica;
-			font-size:12px;
-			line-height:150%;
-			text-align:center;
-		}
-	
-		#templateFooter .mcnTextContent a,#templateFooter .mcnTextContent p a{
-			color:#656565;
-			font-weight:normal;
-			text-decoration:underline;
-		}
-	@media only screen and (min-width:768px){
-		.templateContainer{
-			width:600px !important;
-		}
-
-}	@media only screen and (max-width: 480px){
-		body,table,td,p,a,li,blockquote{
-			-webkit-text-size-adjust:none !important;
-		}
+        #templateFooter{
+            background-color:#FAFAFA;
+            background-image:none;
+            background-repeat:no-repeat;
+            background-position:center;
+            background-size:cover;
+            border-top:0;
+            border-bottom:0;
+            padding-top:9px;
+            padding-bottom:9px;
+        }
+    
+        #templateFooter .mcnTextContent,#templateFooter .mcnTextContent p{
+            color:#656565;
+            font-family:Helvetica;
+            font-size:12px;
+            line-height:150%;
+            text-align:center;
+        }
+    
+        #templateFooter .mcnTextContent a,#templateFooter .mcnTextContent p a{
+            color:#656565;
+            font-weight:normal;
+            text-decoration:underline;
+        }
+    @media only screen and (min-width:768px){
+        .templateContainer{
+            width:600px !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-		body{
-			width:100% !important;
-			min-width:100% !important;
-		}
+        body,table,td,p,a,li,blockquote{
+            -webkit-text-size-adjust:none !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-		.mcnRetinaImage{
-			max-width:100% !important;
-		}
+        body{
+            width:100% !important;
+            min-width:100% !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-		.mcnImage{
-			width:100% !important;
-		}
+        .mcnRetinaImage{
+            max-width:100% !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-		.mcnCartContainer,.mcnCaptionTopContent,.mcnRecContentContainer,.mcnCaptionBottomContent,.mcnTextContentContainer,.mcnBoxedTextContentContainer,.mcnImageGroupContentContainer,.mcnCaptionLeftTextContentContainer,.mcnCaptionRightTextContentContainer,.mcnCaptionLeftImageContentContainer,.mcnCaptionRightImageContentContainer,.mcnImageCardLeftTextContentContainer,.mcnImageCardRightTextContentContainer,.mcnImageCardLeftImageContentContainer,.mcnImageCardRightImageContentContainer{
-			max-width:100% !important;
-			width:100% !important;
-		}
+        .mcnImage{
+            width:100% !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-		.mcnBoxedTextContentContainer{
-			min-width:100% !important;
-		}
+        .mcnCartContainer,.mcnCaptionTopContent,.mcnRecContentContainer,.mcnCaptionBottomContent,.mcnTextContentContainer,.mcnBoxedTextContentContainer,.mcnImageGroupContentContainer,.mcnCaptionLeftTextContentContainer,.mcnCaptionRightTextContentContainer,.mcnCaptionLeftImageContentContainer,.mcnCaptionRightImageContentContainer,.mcnImageCardLeftTextContentContainer,.mcnImageCardRightTextContentContainer,.mcnImageCardLeftImageContentContainer,.mcnImageCardRightImageContentContainer{
+            max-width:100% !important;
+            width:100% !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-		.mcnImageGroupContent{
-			padding:9px !important;
-		}
+        .mcnBoxedTextContentContainer{
+            min-width:100% !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-		.mcnCaptionLeftContentOuter .mcnTextContent,.mcnCaptionRightContentOuter .mcnTextContent{
-			padding-top:9px !important;
-		}
+        .mcnImageGroupContent{
+            padding:9px !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-		.mcnImageCardTopImageContent,.mcnCaptionBottomContent:last-child .mcnCaptionBottomImageContent,.mcnCaptionBlockInner .mcnCaptionTopContent:last-child .mcnTextContent{
-			padding-top:18px !important;
-		}
+        .mcnCaptionLeftContentOuter .mcnTextContent,.mcnCaptionRightContentOuter .mcnTextContent{
+            padding-top:9px !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-		.mcnImageCardBottomImageContent{
-			padding-bottom:9px !important;
-		}
+        .mcnImageCardTopImageContent,.mcnCaptionBottomContent:last-child .mcnCaptionBottomImageContent,.mcnCaptionBlockInner .mcnCaptionTopContent:last-child .mcnTextContent{
+            padding-top:18px !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-		.mcnImageGroupBlockInner{
-			padding-top:0 !important;
-			padding-bottom:0 !important;
-		}
+        .mcnImageCardBottomImageContent{
+            padding-bottom:9px !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-		.mcnImageGroupBlockOuter{
-			padding-top:9px !important;
-			padding-bottom:9px !important;
-		}
+        .mcnImageGroupBlockInner{
+            padding-top:0 !important;
+            padding-bottom:0 !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-		.mcnTextContent,.mcnBoxedTextContentColumn{
-			padding-right:18px !important;
-			padding-left:18px !important;
-		}
+        .mcnImageGroupBlockOuter{
+            padding-top:9px !important;
+            padding-bottom:9px !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-		.mcnImageCardLeftImageContent,.mcnImageCardRightImageContent{
-			padding-right:18px !important;
-			padding-bottom:0 !important;
-			padding-left:18px !important;
-		}
+        .mcnTextContent,.mcnBoxedTextContentColumn{
+            padding-right:18px !important;
+            padding-left:18px !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-		.mcpreview-image-uploader{
-			display:none !important;
-			width:100% !important;
-		}
+        .mcnImageCardLeftImageContent,.mcnImageCardRightImageContent{
+            padding-right:18px !important;
+            padding-bottom:0 !important;
+            padding-left:18px !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-	
-		h1{
-			font-size:22px !important;
-			line-height:125% !important;
-		}
+        .mcpreview-image-uploader{
+            display:none !important;
+            width:100% !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-	
-		h2{
-			font-size:20px !important;
-			line-height:125% !important;
-		}
+    
+        h1{
+            font-size:22px !important;
+            line-height:125% !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-	
-		h3{
-			font-size:18px !important;
-			line-height:125% !important;
-		}
+    
+        h2{
+            font-size:20px !important;
+            line-height:125% !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-	
-		h4{
-			font-size:16px !important;
-			line-height:150% !important;
-		}
+    
+        h3{
+            font-size:18px !important;
+            line-height:125% !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-	
-		.mcnBoxedTextContentContainer .mcnTextContent,.mcnBoxedTextContentContainer .mcnTextContent p{
-			font-size:14px !important;
-			line-height:150% !important;
-		}
+    
+        h4{
+            font-size:16px !important;
+            line-height:150% !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-	
-		#templatePreheader{
-			display:block !important;
-		}
+    
+        .mcnBoxedTextContentContainer .mcnTextContent,.mcnBoxedTextContentContainer .mcnTextContent p{
+            font-size:14px !important;
+            line-height:150% !important;
+        }
 
 }	@media only screen and (max-width: 480px){
-
-		#templatePreheader .mcnTextContent,#templatePreheader .mcnTextContent p{
-			font-size:14px !important;
-			line-height:150% !important;
-		}
+    
+        #templatePreheader{
+            display:block !important;
+        }
 
 }	@media only screen and (max-width: 480px){
 
-		#templateHeader .mcnTextContent,#templateHeader .mcnTextContent p{
-			font-size:16px !important;
-			line-height:150% !important;
-		}
-
-}	@media only screen and (max-width: 480px){
-	
-		#templateBody .mcnTextContent,#templateBody .mcnTextContent p{
-			font-size:16px !important;
-			line-height:150% !important;
-		}
+        #templatePreheader .mcnTextContent,#templatePreheader .mcnTextContent p{
+            font-size:14px !important;
+            line-height:150% !important;
+        }
 
 }	@media only screen and (max-width: 480px){
 
-		#templateFooter .mcnTextContent,#templateFooter .mcnTextContent p{
-			font-size:14px !important;
-			line-height:150% !important;
-		}
+        #templateHeader .mcnTextContent,#templateHeader .mcnTextContent p{
+            font-size:16px !important;
+            line-height:150% !important;
+        }
+
+}	@media only screen and (max-width: 480px){
+    
+        #templateBody .mcnTextContent,#templateBody .mcnTextContent p{
+            font-size:16px !important;
+            line-height:150% !important;
+        }
+
+}	@media only screen and (max-width: 480px){
+
+        #templateFooter .mcnTextContent,#templateFooter .mcnTextContent p{
+            font-size:14px !important;
+            line-height:150% !important;
+        }
 
 }</style></head>
     <body>
         
-        <span class="mcnPreviewText" style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;">*|MC_PREVIEW_TEXT|*</span>
+        <span class="mcnPreviewText" style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;">Siyum for ${siyum_name}</span>
        
         <center>
             <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
@@ -487,57 +492,57 @@
                 <tbody><tr>
                     <td valign="top" class="mcnTextContent">
                         <table border="0" cellpadding="0" cellspacing="0" id="m_1726973761007883661m_-5099309019554073853m_243179981558985769m_-4466272940107546510m_4733914871536301359m_-56000656910093311m_7969682066111792435m_-2000489183066331472m_-6447812123769630138m_-968063963485954499m_4337960113896958335m_5762067212335667416m_5641169455042266492m_-7413569258733671547m_3743225599117003559m_4468386966925104472m_-4281019902982383022m_1091911236894855584m_5296926876505076799m_3608684175444606163m_4245112186231820402m_-9041426181675869564m_-4355530613541822289m_3812444084638745617m_-500464960179229246m_-1803617123377684576m_-3515054581475238703m_-862727020526170776m_-6613291544222084375topMiddle" width="100%">
-	<tbody>
-		<tr>
-			<td valign="top" width="100%"><br>
-			<span style="font-size:16px"><span style="font-family:georgia,times,times new roman,serif">&nbsp;<br>
-			Hi ${state.admin_fname},
-			
-			Thank you for making a siyum for ${state.siyum_name}.<br>
-			<br>
-			Here is the link for people to sign up for mishnayos.<br>
-                 <a href="http://localhost:9090/api/siyumim/${state.admin_id}">Shloshim Sign Up Link</a>
-			<br>
-			&nbsp;<br>
-			
-	
-			
-		</tr>
-		<tr>
-			<td valign="top"><span style="font-family:georgia,times,times new roman,serif">---</span>
-			<table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tbody>
-					<tr>
-						<td align="left">
-						<table border="0" cellpadding="0" cellspacing="0">
-							<tbody>
-								<tr>
-									<td align="left">
-									<table border="0" cellpadding="0" cellspacing="0">
-										<tbody>
-											<tr>
-												<td><span style="font-family:georgia,times,times new roman,serif"><span style="font-size:14px"><strong>Time4Mishna<br>
-												Time4Torah</strong></span></span><br>
-												<span style="font-family:georgia,times,times new roman,serif"><a href="http://www.time4torah.org" target="_blank">www.time4torah.org</a></span><br>
-												<br>
-												<span style="font-family:georgia,times,times new roman,serif"><a href="https://donate.jfutures.org/?message=I%20am%20supporting%20Time4Torah" target="_blank"><span style="color:#008080"><strong><font size="4"><em>Help us&nbsp;disseminate Torah across the world!</em></font></strong></span></a><strong><a href="https://donate.jfutures.org/?message=I%20am%20supporting%20Time4Torah"><span style="color:#008080"><font size="4"><em> </em></font></span></a></strong><br>
-												<strong><span style="color:#008080"><font size="4"><em><a href="https://donate.jfutures.org/?message=I%20am%20supporting%20Time4Torah">Click here to donate to Time4Mishna</a><br>
-												<a href="https://www.paypal.com/paypalme/JewishFuturesTrust" target="_blank">Click here to donate with Paypal</a></em></font></span><br>
-												<span style="color:#008080"><font size="4"><em>Please make sure to write Time4Torah in the message</em></font></span></strong></span></td>
-											</tr>
-										</tbody>
-									</table>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			</td>
-		</tr>
-	</tbody>
+    <tbody>
+        <tr>
+            <td valign="top" width="100%"><br>
+            <span style="font-size:16px"><span style="font-family:georgia,times,times new roman,serif">&nbsp;<br>
+            Hi ${admin_fname},
+            
+            Thank you for making a siyum for ${siyum_name}.<br>
+            <br>
+            Here is the link for people to sign up for mishnayos.<br>
+                 <a href="http://localhost:9090/api/siyumim/${admin_id}">Shloshim Sign Up Link</a>
+            <br>
+            &nbsp;<br>
+            
+    
+            
+        </tr>
+        <tr>
+            <td valign="top"><span style="font-family:georgia,times,times new roman,serif">---</span>
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td align="left">
+                        <table border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td align="left">
+                                    <table border="0" cellpadding="0" cellspacing="0">
+                                        <tbody>
+                                            <tr>
+                                                <td><span style="font-family:georgia,times,times new roman,serif"><span style="font-size:14px"><strong>Time4Mishna<br>
+                                                Time4Torah</strong></span></span><br>
+                                                <span style="font-family:georgia,times,times new roman,serif"><a href="http://www.time4torah.org" target="_blank">www.time4torah.org</a></span><br>
+                                                <br>
+                                                <span style="font-family:georgia,times,times new roman,serif"><a href="https://donate.jfutures.org/?message=I%20am%20supporting%20Time4Torah" target="_blank"><span style="color:#008080"><strong><font size="4"><em>Help us&nbsp;disseminate Torah across the world!</em></font></strong></span></a><strong><a href="https://donate.jfutures.org/?message=I%20am%20supporting%20Time4Torah"><span style="color:#008080"><font size="4"><em> </em></font></span></a></strong><br>
+                                                <strong><span style="color:#008080"><font size="4"><em><a href="https://donate.jfutures.org/?message=I%20am%20supporting%20Time4Torah">Click here to donate to Time4Mishna</a><br>
+                                                <a href="https://www.paypal.com/paypalme/JewishFuturesTrust" target="_blank">Click here to donate with Paypal</a></em></font></span><br>
+                                                <span style="color:#008080"><font size="4"><em>Please make sure to write Time4Torah in the message</em></font></span></strong></span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </td>
+        </tr>
+    </tbody>
 </table>
 
                     </td>
@@ -829,3 +834,9 @@
         </center>
     </body>
 </html>
+`}
+
+}
+
+
+module.exports = adminEmail;
