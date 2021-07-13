@@ -1,4 +1,4 @@
-const {createSiyum, sendSiyumim, sendSingleSiyum, signUp} = require("../models/siyumim.models")
+const {createSiyum, sendSiyumim, sendSingleSiyumList, signUp, sendSiyumDetails} = require("../models/siyumim.models")
 const {altMasechtaNames, changeMasechtaNames, switchAltName} = require("../db/utils/utils");
 const {changefirstLetterToUpperCase} = require("../db/utils/utils");
 const {receiveSiyumDetails}= require("../emails/emailSender.js")
@@ -19,9 +19,9 @@ exports.getSiyumim =(req,res,next)=>{
     })
 }
 
-exports.getSingleSiyum = (req,res,next)=>{
+exports.getSingleSiyumList = (req,res,next)=>{
    const {admin_id} = req.params;
-   sendSingleSiyum(admin_id)
+   sendSingleSiyumList(admin_id)
    .then((siyumList)=>{
        res.send({siyumList})
    })
@@ -42,5 +42,13 @@ exports.postMasechtaLearn =(req,res,next)=>{
     .then((user)=>{
         receiveSiyumDetails({admin_id, user})
         res.status(201).send({user})
+    })
+}
+
+exports.getSiyumDetails =(req,res,next)=>{
+    const {admin_id} = req.params;
+    sendSiyumDetails(admin_id)
+    .then((siyumAdmin)=>{
+        res.send({siyumAdmin})
     })
 }

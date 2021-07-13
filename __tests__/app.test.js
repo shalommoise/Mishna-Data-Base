@@ -168,7 +168,7 @@ describe("/api", ()=>{
         })
     })
     describe.only("/siyumim", ()=>{
-        test.only("201 POST siyum admin ", ()=>{
+        test("201 POST siyum admin ", ()=>{
             return request(app)
             .post("/api/siyumim/")
             .send({
@@ -218,18 +218,18 @@ describe("/api", ()=>{
             .expect(201)
             .then(()=>{
                 return request(app)
-                .get("/api/siyumim/1")
+                .get("/api/siyum/1")
                 .expect(200)
             })
         })
         test("201 POST sign up for Masechta", ()=>{
             return request(app)
-            .post("/api/siyumim/1")
+            .post("/api/siyum/1")
             .send({
                 user_email: "mshalom689@gmail.com",
                 user_fname: "Shalom",
                 user_sname: "Moise",
-                masechta: "Eiruvin",
+                masechta: "Eiruvin"
             })
             .expect(201)
             .then((res)=>{
@@ -239,6 +239,16 @@ describe("/api", ()=>{
                 expect(user_fname).toBe("Shalom");
                 expect(user_sname).toBe("Moise");
                 expect(masechta).toBe("Eiruvin");
+            })
+        })
+        test.only("200 GET admin details by admin_id", ()=>{
+            return request(app)
+            .get("/api/siyumim/1")
+            .expect(200)
+            .then((res)=>{
+                const {siyumAdmin} = res.body;
+                expect(siyumAdmin.admin_fname).toBe("Shalom");
+                expect(siyumAdmin.admin_id).toBe(1);
             })
         })
     })

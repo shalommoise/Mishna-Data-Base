@@ -31,7 +31,7 @@ exports.createSiyum = (siyumInfo)=> pool.connect()
                   })
              })
 
-   exports.sendSingleSiyum = (admin_id) => pool.connect()
+   exports.sendSingleSiyumList = (admin_id) => pool.connect()
            .then(()=>{
                return pool.query(`SELECT * FROM Siyum_number_${admin_id}`)
                 .then((res)=>{
@@ -55,6 +55,8 @@ exports.signUp = (admin_id, userDetails) => {
            const [results] = rows;
           results.masechta = altMasechtaNames[results.masechta]
            return results;
+       }).then((res)=>{
+
        })
        .catch((err)=>console.log(err))
     }
@@ -75,3 +77,13 @@ exports.signUp = (admin_id, userDetails) => {
             FOREIGN KEY(end_mishna) REFERENCES mishna_table(mishna_id)
         )`)
     }
+
+    exports.sendSiyumDetails = (admin_id) => pool.connect()
+               .then(()=>{
+                   return pool.query(`SELECT * FROM siyum_makers WHERE admin_id=${admin_id}`)
+                   .then((res)=>{
+                    const {rows} = res;
+                    const [results] = rows;
+                    return results;
+                   })
+               })
