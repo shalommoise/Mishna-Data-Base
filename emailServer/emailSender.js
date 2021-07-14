@@ -23,7 +23,7 @@ const completeEmail = (siyumDets) =>{
   
     const email = completeEmail(siyumDets);
     
-    sendEmail(email)
+    // sendEmail(email)
     
  
 }
