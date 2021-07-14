@@ -76,5 +76,5 @@ CREATE TABLE siyum_makers
   date_made TIMESTAMP,
   finish_date VARCHAR NOT NULL,
   msg VARCHAR,
-  isOpen VARCHAR  DEFAULT 'true'
+  isopen VARCHAR  DEFAULT 'true'
 ); 
