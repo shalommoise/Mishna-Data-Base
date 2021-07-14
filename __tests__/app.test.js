@@ -251,7 +251,7 @@ describe("/api", ()=>{
                 expect(siyumAdmin.admin_id).toBe(1);
             })
         })
-        test.only("201 PATCH siyum makers table isOpen from false to true", ()=>{
+        test("201 PATCH siyum makers table isOpen from false to true", ()=>{
             return request(app)
             .post("/api/siyumim/")
             .send({
@@ -280,6 +280,24 @@ describe("/api", ()=>{
                   expect(open).toBe("true")
                })
             })
+        })
+        test.only("201 POST siyum makers with message", ()=>{
+            return request(app)
+            .post("/api/siyumim/")
+            .send({
+                admin_email: "mshalom689@gmail.com",
+                admin_fname: "Eli",
+                admin_sname: "Goldin",
+                siyum_name: "שלמה בן דוד",
+                finish_date: "14/08/21",
+                isopen: "false",
+                msg: "Hi everyone, thanks for signing up"
+            }).expect(201)
+            .then((res)=>{
+                const {msg} = res.body.siyumDetails;
+                expect(msg).toBe("Hi everyone, thanks for signing up")
+            })
+            
         })
     })
 })

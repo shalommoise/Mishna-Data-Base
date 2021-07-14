@@ -1,13 +1,15 @@
 const {pool, client} = require("../db/connection");
-const {altMasechtaNames} = require("../db/utils/utils")
+const {altMasechtaNames, removeApostraphe} = require("../db/utils/utils")
 
 
 const createSiyum = (siyumInfo)=> pool.connect()
          .then(()=>{
-             const {admin_email, admin_fname, admin_sname, siyum_name , finish_date, isopen} = siyumInfo;
+             const {admin_email, admin_fname, admin_sname, siyum_name , finish_date, isopen, msg} = siyumInfo;
            
-             const columns =  isopen === "false" ? ", isopen ": "";
-             const values =  isopen === "false" ? ", false ":"";
+             let columns =  isopen === "false" ? ", isopen ": "";
+             let values =  isopen === "false" ? ", false ":"";
+             columns += msg ? ', msg' : '';
+             values += msg ? `, '${removeApostraphe(msg)}'` : '';
              return pool.query(`INSERT INTO siyum_makers (admin_email, admin_fname, admin_sname, siyum_name , finish_date ${columns})
                                  VALUES ('${admin_email}', '${admin_fname}', '${admin_sname}', '${siyum_name}', '${finish_date}'${values}) RETURNING *;`)
                                  .then((res)=>{
