@@ -73,7 +73,7 @@ CREATE TABLE siyum_makers
   admin_sname VARCHAR NOT NULL,
   siyum_name VARCHAR NOT NULL,
   siyum_type VARCHAR DEFAULT 'Shloshim',
-  date_made TIMESTAMP,
+  date_made VARCHAR DEFAULT GETDATE(),
   finish_date VARCHAR NOT NULL,
   msg VARCHAR,
   isopen VARCHAR  DEFAULT 'true'
