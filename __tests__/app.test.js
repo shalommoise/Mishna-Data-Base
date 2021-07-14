@@ -193,7 +193,7 @@ describe("/api", ()=>{
                 expect(finish_date).toBe("30/08/21");
             })
         })
-        test("200 GET ALL siyumim with isOpen = true", ()=>{
+        test("200 GET ALL siyumim with isopen = true", ()=>{
             return request(app)
             .get("/api/siyumim/")
             .expect(200)
@@ -201,7 +201,7 @@ describe("/api", ()=>{
                 const {siyumim} = res.body;
             expect(siyumim.length > 0).toBe(true)
                 siyumim.forEach((siyum)=>{
-                    expect(siyum.isOpen).toBe(true)
+                    expect(siyum.isopen).toBe(true)
                 })
             })
         })
@@ -241,7 +241,7 @@ describe("/api", ()=>{
                 expect(masechta).toBe("Eiruvin");
             })
         })
-        test.only("200 GET admin details by admin_id", ()=>{
+        test("200 GET admin details by admin_id", ()=>{
             return request(app)
             .get("/api/siyumim/1")
             .expect(200)
@@ -249,6 +249,36 @@ describe("/api", ()=>{
                 const {siyumAdmin} = res.body;
                 expect(siyumAdmin.admin_fname).toBe("Shalom");
                 expect(siyumAdmin.admin_id).toBe(1);
+            })
+        })
+        test.only("201 PATCH siyum makers table isOpen from false to true", ()=>{
+            return request(app)
+            .post("/api/siyumim/")
+            .send({
+                admin_email: "mshalom689@gmail.com",
+                admin_fname: "Eli",
+                admin_sname: "Goldin",
+                siyum_name: "שלמה בן דוד",
+                finish_date: "14/08/21",
+                isopen: "false"
+            }).expect(201)
+            .then((res)=>{
+               const {admin_id, isopen} = res.body.siyumDetails;
+               const notOpen = isopen;
+               expect(notOpen).toBe("false")
+               return request(app)
+               .patch(`/api/siyumim/${admin_id}`)
+               .send({isopen: true})
+               .expect(201)
+               .then((res)=>{
+          
+                  const open = res.body.siyumDetails.isopen;
+                  const id = res.body.siyumDetails.admin_id;
+
+                  expect(admin_id).toBe(id)
+                  expect(open).not.toBe(notOpen)
+                  expect(open).toBe("true")
+               })
             })
         })
     })

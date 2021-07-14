@@ -4,9 +4,12 @@ const {altMasechtaNames} = require("../db/utils/utils")
 
 const createSiyum = (siyumInfo)=> pool.connect()
          .then(()=>{
-             const {admin_email, admin_fname, admin_sname, siyum_name , finish_date} = siyumInfo;
-             return pool.query(`INSERT INTO siyum_makers (admin_email, admin_fname, admin_sname, siyum_name , finish_date)
-                                 VALUES ('${admin_email}', '${admin_fname}', '${admin_sname}', '${siyum_name}', '${finish_date}') RETURNING *;`)
+             const {admin_email, admin_fname, admin_sname, siyum_name , finish_date, isopen} = siyumInfo;
+           
+             const columns =  isopen === "false" ? ", isopen ": "";
+             const values =  isopen === "false" ? ", false ":"";
+             return pool.query(`INSERT INTO siyum_makers (admin_email, admin_fname, admin_sname, siyum_name , finish_date ${columns})
+                                 VALUES ('${admin_email}', '${admin_fname}', '${admin_sname}', '${siyum_name}', '${finish_date}'${values}) RETURNING *;`)
                                  .then((res)=>{
                                      const {rows} = res;
                                      const [result] = rows;
@@ -19,12 +22,12 @@ const createSiyum = (siyumInfo)=> pool.connect()
 
   const sendSiyumim =()=>  pool.connect()
           .then(()=>{
-         return pool.query("SELECT * FROM siyum_makers WHERE isOpen = 'true';")
+         return pool.query("SELECT * FROM siyum_makers WHERE isopen = 'true';")
         .then((res)=>{
             const {rows} = res;
             const results = rows.map((row)=>{
             const copy = {...row};
-             copy.isOpen = copy.isOpen = "true" ? true : false;
+             copy.isopen = copy.isopen = "true" ? true : false;
                 return copy;  
                     })
                 return results;
@@ -93,5 +96,18 @@ const signUp = (admin_id, userDetails) => {
                    })
                })
 
-
-    module.exports = {createSiyum, sendSiyumDetails, sendSiyumim, sendSingleSiyumList, signUp}
+const editSiyumDetails = (admin_id, edits)=>pool.connect()
+          .then(()=>{
+              const {isopen} = edits;
+             
+              let edit = isopen ? `SET isopen ='${isopen}'` : ''
+              
+              return pool.query(`UPDATE siyum_makers ${edit} WHERE admin_id=${admin_id} RETURNING *;`)
+              .then((res)=>{
+                  const {rows} = res;
+                  const [results] = rows;
+                    return results;
+              }).catch((err)=>console.log(err))
+          })
+    module.exports = {createSiyum, sendSiyumDetails,
+         sendSiyumim, sendSingleSiyumList, signUp, editSiyumDetails}
