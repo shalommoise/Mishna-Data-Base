@@ -233,7 +233,7 @@ describe("/api", ()=>{
             })
             .expect(201)
             .then((res)=>{
-                const {user_email, user_fname, user_sname, masechta} = res.body.user;
+                const {user_email, user_fname, user_sname, masechta} = res.body.user.userDetails;
                 
                 expect(user_email).toBe("mshalom689@gmail.com");
                 expect(user_fname).toBe("Shalom");

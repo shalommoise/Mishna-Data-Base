@@ -1,15 +1,17 @@
-const nodemailer = require('nodemailer');
+
 const  {Time4MishnaEmail, transporter} = require("./emailServer");
-const adminEmail = require("./adminEmail")
-const userEmail = require("./userEmail")
+const adminEmail = require("./emails/adminEmail")
+const userEmail = require("./emails/userEmail")
 
 
-
+const emailTypes =(data)=> {
+  const {type} = data;
+  if (type === "adminSignUp") return adminEmail(data);
+  else if (type === "userSignUp") return userEmail(data);
+}
 
 const completeEmail = (siyumDets) =>{
-  const {siyumDetails, admin_id, user} = siyumDets;
-    const email = siyumDetails ? adminEmail(siyumDetails) : userEmail(admin_id, user);
-    
+    const email = emailTypes(siyumDets);
     return {
     from: Time4MishnaEmail,
     ...email
@@ -18,7 +20,9 @@ const completeEmail = (siyumDets) =>{
 
 
   const receiveSiyumDetails =(siyumDets)=>{
+  
     const email = completeEmail(siyumDets);
+    
     sendEmail(email)
     
  

@@ -1,19 +1,9 @@
-const userEmail = (admin_id, data)=>{
-    console.log(data)
-    const {  user_id,
-        user_email,
-        user_fname,
-        user_sname,
-        masechta,
-        start_mishna,
-        end_mishna,
-        reminder,
-        siyum_name
-    } = data;
+const adminEmail = (data)=>{
 
-    return  {
-    to: user_email,
-    subject: `Learning for ${siyum_name}`,
+    const {admin_id, admin_email, admin_fname, admin_sname, siyum_name, siyum_type, finish_date, msg, isOpen} = data.siyumDetails;
+return  {
+    to: admin_email,
+    subject: `Siyum for ${siyum_name}`,
     html:`<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
     <head>
@@ -21,7 +11,7 @@ const userEmail = (admin_id, data)=>{
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Learning for ${siyum_name}</title>
+        <title>Siyum for ${siyum_name}</title>
         
     <style type="text/css">
         p{
@@ -424,7 +414,7 @@ const userEmail = (admin_id, data)=>{
 }</style></head>
     <body>
         
-        <span class="mcnPreviewText" style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;">Learning for ${siyum_name}</span>
+        <span class="mcnPreviewText" style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;">Siyum for ${siyum_name}</span>
        
         <center>
             <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
@@ -507,13 +497,12 @@ const userEmail = (admin_id, data)=>{
         <tr>
             <td valign="top" width="100%"><br>
             <span style="font-size:16px"><span style="font-family:georgia,times,times new roman,serif">&nbsp;<br>
-            Hi ${user_fname},
+            Hi ${admin_fname},
             
-            Thank you for making a Learning Maseches ${masechta} for ${siyum_name}.<br>
+            Thank you for making a siyum for ${siyum_name}.<br>
             <br>
             Here is the link for people to sign up for mishnayos.<br>
-            <a href="https://time4torah.org/masechta/${masechta}">Maseches ${masechta} </a>
-                 <a href="http://localhost:9090/api/siyumim/${admin_id}">Shloshim Sign Up Link</a>
+                 <a href="http://localhost:9090/api/siyum/${admin_id}">Shloshim Sign Up Link</a>
             <br>
             &nbsp;<br>
             
@@ -851,4 +840,4 @@ const userEmail = (admin_id, data)=>{
 }
 
 
-module.exports = userEmail;
+module.exports = adminEmail;

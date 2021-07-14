@@ -1,12 +1,12 @@
 const {createSiyum, sendSiyumim, sendSingleSiyumList, signUp, sendSiyumDetails} = require("../models/siyumim.models")
 const {altMasechtaNames, changeMasechtaNames, switchAltName} = require("../db/utils/utils");
 const {changefirstLetterToUpperCase} = require("../db/utils/utils");
-const {receiveSiyumDetails}= require("../emails/emailSender.js")
+const {receiveSiyumDetails}= require("../emailServer/emailSender.js")
 
 exports.postSiyum =(req,res,next)=>{
     createSiyum(req.body)
     .then((siyumDetails)=>{
-        receiveSiyumDetails({siyumDetails})
+        receiveSiyumDetails({ type: "adminSignUp", siyumDetails})
         res.status(201).send({siyumDetails})
     })
 
@@ -40,7 +40,7 @@ exports.postMasechtaLearn =(req,res,next)=>{
     userDetails.masechta = masechtaName;
     signUp(admin_id, userDetails)
     .then((user)=>{
-        receiveSiyumDetails({admin_id, user})
+        receiveSiyumDetails({type: "userSignUp",user})
         res.status(201).send({user})
     })
 }

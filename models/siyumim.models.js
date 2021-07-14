@@ -2,7 +2,7 @@ const {pool, client} = require("../db/connection");
 const {altMasechtaNames} = require("../db/utils/utils")
 
 
-exports.createSiyum = (siyumInfo)=> pool.connect()
+const createSiyum = (siyumInfo)=> pool.connect()
          .then(()=>{
              const {admin_email, admin_fname, admin_sname, siyum_name , finish_date} = siyumInfo;
              return pool.query(`INSERT INTO siyum_makers (admin_email, admin_fname, admin_sname, siyum_name , finish_date)
@@ -11,13 +11,13 @@ exports.createSiyum = (siyumInfo)=> pool.connect()
                                      const {rows} = res;
                                      const [result] = rows;
                                      const {admin_id} = result;
-                                     createSiyum(admin_id)
+                                     createSiyumTable(admin_id)
                                      return result;
                                  })
                                  
          }).catch((err)=>console.log(err));
 
-  exports.sendSiyumim =()=>  pool.connect()
+  const sendSiyumim =()=>  pool.connect()
           .then(()=>{
          return pool.query("SELECT * FROM siyum_makers WHERE isOpen = 'true';")
         .then((res)=>{
@@ -31,7 +31,7 @@ exports.createSiyum = (siyumInfo)=> pool.connect()
                   })
              })
 
-   exports.sendSingleSiyumList = (admin_id) => pool.connect()
+   const sendSingleSiyumList = (admin_id) => pool.connect()
            .then(()=>{
                return pool.query(`SELECT * FROM Siyum_number_${admin_id}`)
                 .then((res)=>{
@@ -41,7 +41,7 @@ exports.createSiyum = (siyumInfo)=> pool.connect()
            })
 
 
-exports.signUp = (admin_id, userDetails) => {
+const signUp = (admin_id, userDetails) => {
 
     return pool.connect()
        .then(()=>{
@@ -55,14 +55,19 @@ exports.signUp = (admin_id, userDetails) => {
            const [results] = rows;
           results.masechta = altMasechtaNames[results.masechta]
            return results;
-       }).then((res)=>{
-
+       }).then((userDetails)=>{
+           return sendSiyumDetails(admin_id)
+           .then((siyumDetails)=>{
+            return {siyumDetails, userDetails}
+           })
+      
+           
        })
        .catch((err)=>console.log(err))
     }
 
 
-    const createSiyum =(id)=>{
+    const createSiyumTable =(id)=>{
         return pool.query(`CREATE TABLE Siyum_number_${id} (
             user_id SERIAL PRIMARY KEY,
             user_email VARCHAR NOT NULL,
@@ -78,7 +83,7 @@ exports.signUp = (admin_id, userDetails) => {
         )`)
     }
 
-    exports.sendSiyumDetails = (admin_id) => pool.connect()
+    const sendSiyumDetails = (admin_id) => pool.connect()
                .then(()=>{
                    return pool.query(`SELECT * FROM siyum_makers WHERE admin_id=${admin_id}`)
                    .then((res)=>{
@@ -87,3 +92,6 @@ exports.signUp = (admin_id, userDetails) => {
                     return results;
                    })
                })
+
+
+    module.exports = {createSiyum, sendSiyumDetails, sendSiyumim, sendSingleSiyumList, signUp}
