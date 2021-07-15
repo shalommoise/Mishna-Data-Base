@@ -178,3 +178,19 @@ exports.changefirstLetterToUpperCase =(str)=>{
     const finalStr = arr.join("");
     return finalStr;
 }
+
+const months = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+exports.getDate =()=>{
+    
+    const fullDate = Date();
+    const arr = fullDate.split(" ");
+    const [weekday, month, day, year] = arr;
+    const monthEng = month;
+  
+    let monthNum = months.indexOf(monthEng);
+    if(monthNum < 10) monthNum = "0" + monthNum;
+    const todaysDate = `${day}/${monthNum}/${year}`;
+ 
+    return todaysDate;
+}
