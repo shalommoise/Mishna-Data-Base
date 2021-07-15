@@ -1,9 +1,10 @@
 const request = require("supertest");
 const app = require("../app");
-
+const resetSiyum = require("../db/seed/resetSiyums")
 describe("/api", ()=>{
-
+ beforeEach(()=>resetSiyum)
     describe("/sedarim/", ()=>{
+        
         test("200 GET list of sedarim", ()=>{
             return request(app)
             .get("/api/sedarim/")
