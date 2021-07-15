@@ -2,30 +2,27 @@ const {pool, client} = require("../db/connection");
 const {altMasechtaNames, removeApostraphe, getDate} = require("../db/utils/utils")
 
 
-const createSiyum = (siyumInfo)=> pool.connect()
-         .then(()=>{
-             const {admin_email, admin_fname, admin_sname, siyum_name , finish_date, isopen, msg} = siyumInfo;
-           
-             let columns =  isopen === "false" ? ", isopen ": "";
-             let values =  isopen === "false" ? ", false ":"";
-             columns += msg ? ', msg' : '';
-             values += msg ? `, '${removeApostraphe(msg)}'` : '';
-             return pool.query(`INSERT INTO siyum_makers (admin_email, admin_fname, admin_sname, siyum_name , finish_date, date_made ${columns})
-                                 VALUES ('${admin_email}', '${admin_fname}', '${admin_sname}', '${siyum_name}', '${finish_date}', '${getDate()}' ${values}) RETURNING *;`)
-                                 .then((res)=>{
-                                     const {rows} = res;
-                                     const [result] = rows;
-                                     const {admin_id} = result;
-                                     createSiyumTable(admin_id)
-                                       return result;
-                                     
-                                 }).catch((err)=>console.log(err))
-                                 
-         }).catch((err)=>console.log(err));
+const createSiyum = (siyumInfo)=> {
 
-  const sendSiyumim =()=>  pool.connect()
-          .then(()=>{
-         return pool.query("SELECT * FROM siyum_makers WHERE isopen = 'true';")
+   const {admin_email, admin_fname, admin_sname, siyum_name , finish_date, isopen, msg} = siyumInfo;
+ 
+   let columns =  isopen === "false" ? ", isopen ": "";
+   let values =  isopen === "false" ? ", false ":"";
+   columns += msg ? ', msg' : '';
+   values += msg ? `, '${removeApostraphe(msg)}'` : '';
+   return pool.query(`INSERT INTO siyum_makers (admin_email, admin_fname, admin_sname, siyum_name , finish_date, date_made ${columns})
+                       VALUES ('${admin_email}', '${admin_fname}', '${admin_sname}', '${siyum_name}', '${finish_date}', '${getDate()}' ${values}) RETURNING *;`)
+                       .then((res)=>{
+                           const {rows} = res;
+                           const [result] = rows;
+                           const {admin_id} = result;
+                           createSiyumTable(admin_id)
+                             return result;                                
+         }).catch((err)=>console.log(err));
+        }
+
+  const sendSiyumim =()=>  
+         pool.query("SELECT * FROM siyum_makers WHERE isopen = 'true';")
         .then((res)=>{
             const {rows} = res;
             const results = rows.map((row)=>{
@@ -35,26 +32,22 @@ const createSiyum = (siyumInfo)=> pool.connect()
                     })
                 return results;
                   })
-             })
+         
 
-   const sendSingleSiyumList = (admin_id) => pool.connect()
-           .then(()=>{
-               return pool.query(`SELECT * FROM Siyum_number_${admin_id}`)
+   const sendSingleSiyumList = (admin_id) => 
+             pool.query(`SELECT * FROM Siyum_number_${admin_id}`)
                 .then((res)=>{
                     const {rows} = res;
                     return rows;
                 })
-           })
+
 
 
 const signUp = (admin_id, userDetails) => {
 
-    return pool.connect()
-       .then(()=>{
         const {masechta, user_email, user_fname, user_sname, start_mishna, end_mishna } = userDetails;
         return pool.query(`INSERT INTO Siyum_number_${admin_id} (user_email, user_fname, user_sname, masechta) 
         VALUES ('${user_email}', '${user_fname}', '${user_sname}', '${masechta}') RETURNING *;`)
-       })
        .then((res)=>{
   
            const {rows} = res;
@@ -89,18 +82,16 @@ const signUp = (admin_id, userDetails) => {
         )`)
     }
 
-    const sendSiyumDetails = (admin_id) => pool.connect()
-               .then(()=>{
-                   return pool.query(`SELECT * FROM siyum_makers WHERE admin_id=${admin_id}`)
+ const sendSiyumDetails = (admin_id) => 
+    pool.query(`SELECT * FROM siyum_makers WHERE admin_id=${admin_id}`)
                    .then((res)=>{
                     const {rows} = res;
                     const [results] = rows;
                     return results;
                    })
-               })
+  
 
-const editSiyumDetails = (admin_id, edits)=>pool.connect()
-          .then(()=>{
+const editSiyumDetails = (admin_id, edits)=> {
               const {isopen} = edits;
              
               let edit = isopen ? `SET isopen ='${isopen}'` : ''
@@ -111,6 +102,7 @@ const editSiyumDetails = (admin_id, edits)=>pool.connect()
                   const [results] = rows;
                     return results;
               }).catch((err)=>console.log(err))
-          })
+          }
+
     module.exports = {createSiyum, sendSiyumDetails,
          sendSiyumim, sendSingleSiyumList, signUp, editSiyumDetails}
