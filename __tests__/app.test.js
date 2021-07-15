@@ -167,7 +167,7 @@ describe("/api", ()=>{
             })
         })
     })
-    describe.only("/siyumim", ()=>{
+    describe("/siyumim", ()=>{
         test("201 POST siyum admin ", ()=>{
             return request(app)
             .post("/api/siyumim/")
@@ -281,7 +281,7 @@ describe("/api", ()=>{
                })
             })
         })
-        test.only("201 POST siyum makers with message", ()=>{
+        test("201 POST siyum makers with message", ()=>{
             return request(app)
             .post("/api/siyumim/")
             .send({
