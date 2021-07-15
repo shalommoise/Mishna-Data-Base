@@ -1,5 +1,5 @@
 const {pool, client} = require("../db/connection");
-const {altMasechtaNames, removeApostraphe} = require("../db/utils/utils")
+const {altMasechtaNames, removeApostraphe, getDate} = require("../db/utils/utils")
 
 
 const createSiyum = (siyumInfo)=> pool.connect()
@@ -10,15 +10,16 @@ const createSiyum = (siyumInfo)=> pool.connect()
              let values =  isopen === "false" ? ", false ":"";
              columns += msg ? ', msg' : '';
              values += msg ? `, '${removeApostraphe(msg)}'` : '';
-             return pool.query(`INSERT INTO siyum_makers (admin_email, admin_fname, admin_sname, siyum_name , finish_date ${columns})
-                                 VALUES ('${admin_email}', '${admin_fname}', '${admin_sname}', '${siyum_name}', '${finish_date}'${values}) RETURNING *;`)
+             return pool.query(`INSERT INTO siyum_makers (admin_email, admin_fname, admin_sname, siyum_name , finish_date, date_made ${columns})
+                                 VALUES ('${admin_email}', '${admin_fname}', '${admin_sname}', '${siyum_name}', '${finish_date}', '${getDate()}' ${values}) RETURNING *;`)
                                  .then((res)=>{
                                      const {rows} = res;
                                      const [result] = rows;
                                      const {admin_id} = result;
                                      createSiyumTable(admin_id)
-                                     return result;
-                                 })
+                                       return result;
+                                     
+                                 }).catch((err)=>console.log(err))
                                  
          }).catch((err)=>console.log(err));
 
