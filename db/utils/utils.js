@@ -1,11 +1,11 @@
-exports.restrictTitle = (oldTitle) =>{
+const restrictTitle = (oldTitle) =>{
     const titleArr = oldTitle.split(" ");
 titleArr.shift();
 const newTitle = titleArr.join(" ");
 return newTitle;
 }
 
-exports.changeSederTitle = {
+const changeSederTitle = {
     
     Zeraim: "Zeraim", 
     Moed: "Moed",
@@ -15,7 +15,7 @@ exports.changeSederTitle = {
     Tahorot: "Taharos"
 }
 
-exports.reorderMasechtaArray = (arr, id)=>{
+const reorderMasechtaArray = (arr, id)=>{
     
     if(!arr||!arr.length) return [];
     const reorderArr = [];
@@ -37,7 +37,7 @@ if(id) {
     return answerArr;
 }
 
-exports.reorderNestedArrays =(arr , id)=>{
+const reorderNestedArrays =(arr , id)=>{
     if(!arr||!arr.length) return [];
   const  reorderArr = arr.map(()=>[]);
     arr.forEach((obj)=>{
@@ -49,19 +49,19 @@ exports.reorderNestedArrays =(arr , id)=>{
 }
 
 
-exports.removeApostraphe =(text)=>{
+const removeApostraphe =(text)=>{
     if(!text||!text.length) return '';
     const newText = text.replace(/'/g, '"');
     return newText;
   }
   
-  exports.addApostraphe =(text)=>{
+ const addApostraphe =(text)=>{
    if(!text||!text.length) return '';
     const newText = text.replace(/"/g, "'");
      return newText;
   }
 
- exports.altMasechtaNames = {
+ const altMasechtaNames = {
  Berakhot : "Brachos",
   Peah : "Peah", 
   Demai : "Demai",
@@ -128,7 +128,7 @@ exports.removeApostraphe =(text)=>{
  Oktzin: "Uktzin"
   }
 
-exports.switchAltName = (obj)=>{
+const switchAltName = (obj)=>{
     const entries = Object.entries(obj);
     
     const newObj = {};
@@ -138,7 +138,7 @@ exports.switchAltName = (obj)=>{
     return newObj;
 }
 
-exports.linkToTitle = (link)=>{
+const linkToTitle = (link)=>{
     if(!link) return "";
     const arr = link.split("/");
     const withMp3 = arr[arr.length-1];
@@ -162,14 +162,23 @@ exports.linkToTitle = (link)=>{
 
 }
 
-exports.changeMasechtaNames = (arr, altNames)=> {
+const changeMasechtaNames = (arr, altNames)=> {
     return arr.map((masechta)=>{
     const copy = {...masechta}
     copy.masechta_name = altNames[copy.masechta_name]
     return copy;
 })}
 
-exports.changefirstLetterToUpperCase =(str)=>{
+const formatMishnayos = (arr, altNames)=> {
+    return arr.map((masechta)=>{
+    const copy = {...masechta}
+    copy.masechta_name = altNames[copy.masechta_name];
+    copy.mishna_text_he = addApostraphe(copy.mishna_text_he)
+    copy.mishna_text_eng = addApostraphe(copy.mishna_text_eng)
+    return copy;
+})}
+
+const changefirstLetterToUpperCase =(str)=>{
     if(!str) return "";
     const arr = str.split("");
     const firstLetter = arr.shift();
@@ -181,7 +190,7 @@ exports.changefirstLetterToUpperCase =(str)=>{
 
 const months = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
                     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-exports.getDate =()=>{
+const getDate =()=>{
     
     const fullDate = Date();
     const arr = fullDate.split(" ");
@@ -194,3 +203,7 @@ exports.getDate =()=>{
  
     return todaysDate;
 }
+
+module.exports = {addApostraphe, restrictTitle, changeSederTitle, reorderMasechtaArray, reorderNestedArrays,
+    removeApostraphe, altMasechtaNames, switchAltName, linkToTitle, changeMasechtaNames, formatMishnayos,
+    changefirstLetterToUpperCase, getDate}
