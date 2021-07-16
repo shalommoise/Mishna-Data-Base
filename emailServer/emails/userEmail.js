@@ -1,6 +1,8 @@
 const {firstHalf, secondHalf} = require("./emailTemplates")
-
+// const {gethebrewDate} = require("../../db/utils/hebrewDateConverter")
+const axios = require("axios")
 const userEmail = (data)=>{
+;
     const {siyumDetails, userDetails} = data.user;
     const {  
         user_id,
@@ -23,7 +25,8 @@ const {
         date_made,
         finish_date,
         msg,
-        isopen
+        isopen,
+        hebFinishDate
      
     } = siyumDetails;
     return  {
@@ -41,11 +44,15 @@ const {
             <br>
             &nbsp;<br>
 
-            Siyum Date is ${finish_date} 
+          
             <br>
              Contact Siyum Organiser : ${admin_fname} ${admin_sname},
              <a href="${admin_email}">${admin_email}</a>
-    
+             <br>
+             Siyum Date is <span id="date">${finish_date} </span> <span id="hebDate">${hebFinishDate}</span>
+         
+             
+             
             ${secondHalf}
      
 `}

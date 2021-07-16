@@ -1,28 +1,30 @@
 const {pool, client} = require("../db/connection");
 const {altMasechtaNames, removeApostraphe, getDate} = require("../db/utils/utils")
-
+const {gethebrewDate} = require("../db/utils/hebrewDateConverter")
 
 const createSiyum = (siyumInfo)=> {
-
    const {admin_email, admin_fname, admin_sname, siyum_name , finish_date, isopen, msg} = siyumInfo;
- 
-   let columns =  isopen === "false" ? ", isopen ": "";
+//    const hebDate = ''
+ let columns =  isopen === "false" ? ", isopen ": "";
    let values =  isopen === "false" ? ", false ":"";
    columns += msg ? ', msg' : '';
    values += msg ? `, '${removeApostraphe(msg)}'` : '';
-   return pool.query(`INSERT INTO siyum_makers (admin_email, admin_fname, admin_sname, siyum_name , finish_date, date_made ${columns})
-                       VALUES ('${admin_email}', '${admin_fname}', '${admin_sname}', '${siyum_name}', '${finish_date}', '${getDate()}' ${values}) RETURNING *;`)
+ return gethebrewDate(finish_date).then((hDate)=>{
+      return hDate
+    }).then((hebDate)=>{
+  return pool.query(`INSERT INTO siyum_makers (admin_email, admin_fname, admin_sname, siyum_name , finish_date, date_made, heb_date ${columns})
+                       VALUES ('${admin_email}', '${admin_fname}', '${admin_sname}', '${siyum_name}', '${finish_date}' , '${getDate()}','${hebDate}' ${values}) RETURNING *;`)
                        .then((res)=>{
                            const {rows} = res;
                            const [result] = rows;
                            const {admin_id} = result;
                            createSiyumTable(admin_id)
                              return result;                                
-         }).catch((err)=>console.log(err));
+         })})
+       .catch((err)=>console.log(err));
         }
 
-  const sendSiyumim =()=>  
-         pool.query("SELECT * FROM siyum_makers WHERE isopen = 'true';")
+  const sendSiyumim =()=> pool.query("SELECT * FROM siyum_makers WHERE isopen = 'true';")
         .then((res)=>{
             const {rows} = res;
             const results = rows.map((row)=>{
@@ -44,7 +46,6 @@ const createSiyum = (siyumInfo)=> {
 
 
 const signUp = (admin_id, userDetails) => {
-
         const {masechta, user_email, user_fname, user_sname, start_mishna, end_mishna } = userDetails;
         return pool.query(`INSERT INTO Siyum_number_${admin_id} (user_email, user_fname, user_sname, masechta) 
         VALUES ('${user_email}', '${user_fname}', '${user_sname}', '${masechta}') RETURNING *;`)
@@ -57,7 +58,9 @@ const signUp = (admin_id, userDetails) => {
        }).then((userDetails)=>{
            return sendSiyumDetails(admin_id)
            .then((siyumDetails)=>{
-            return {siyumDetails, userDetails}
+          
+                return {siyumDetails, userDetails}
+            
            })
       
            
@@ -83,7 +86,7 @@ const signUp = (admin_id, userDetails) => {
     }
 
  const sendSiyumDetails = (admin_id) => 
-    pool.query(`SELECT * FROM siyum_makers WHERE admin_id=${admin_id}`)
+    pool.query(`SELECT * FROM siyum_makers WHERE admin_id=${admin_id};`)
                    .then((res)=>{
                     const {rows} = res;
                     const [results] = rows;

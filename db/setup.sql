@@ -76,5 +76,6 @@ CREATE TABLE siyum_makers
   date_made VARCHAR,
   finish_date VARCHAR NOT NULL,
   msg VARCHAR,
-  isopen VARCHAR  DEFAULT 'true'
+  isopen VARCHAR  DEFAULT 'true',
+  heb_date VARCHAR
 ); 
