@@ -20,7 +20,7 @@ const completeEmail = (siyumDets) =>{
 
 
   const receiveSiyumDetails =(siyumDets)=>{
-  
+
     const email = completeEmail(siyumDets);
     
     // sendEmail(email)

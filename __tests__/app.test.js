@@ -1,8 +1,8 @@
 const request = require("supertest");
 const app = require("../app");
-const resetSiyum = require("../db/seed/resetSiyums")
+const {resetSiyum} = require("../db/seed/resetSiyums")
 describe("/api", ()=>{
- beforeEach(()=>resetSiyum)
+//  beforeEach(()=>resetSiyum())
     describe("/sedarim/", ()=>{
         
         test("200 GET list of sedarim", ()=>{
@@ -168,7 +168,8 @@ describe("/api", ()=>{
             })
         })
     })
-    describe("/siyumim", ()=>{
+  describe.only("/siyumim", ()=>{
+        // beforeEach(()=>resetSiyum())
         test("201 POST siyum admin ", ()=>{
             return request(app)
             .post("/api/siyumim/")
@@ -177,7 +178,7 @@ describe("/api", ()=>{
                 admin_fname: "Shalom",
                 admin_sname: "Moise",
                 siyum_name: "Yitzchak Ben Avraham",
-                finish_date: "30/08/21"
+                finish_date: "30/08/2021"
             })
             .expect(201)
             .then((res)=>{
@@ -191,10 +192,11 @@ describe("/api", ()=>{
                 expect(admin_fname).toBe("Shalom");
                 expect(admin_sname).toBe("Moise");
                 expect(siyum_name).toBe("Yitzchak Ben Avraham");
-                expect(finish_date).toBe("30/08/21");
+                expect(finish_date).toBe("30/08/2021");
             })
         })
         test("200 GET ALL siyumim with isopen = true", ()=>{
+           
             return request(app)
             .get("/api/siyumim/")
             .expect(200)
@@ -204,8 +206,9 @@ describe("/api", ()=>{
                 siyumim.forEach((siyum)=>{
                     expect(siyum.isopen).toBe(true)
                 })
-            })
-        })
+          
+                })
+              })
         test("200 GET TABLE for siyum", ()=>{
             return request(app)
             .post("/api/siyumim/")
@@ -214,7 +217,7 @@ describe("/api", ()=>{
                 admin_fname: "Shalom",
                 admin_sname: "Moise",
                 siyum_name: "Yitzchak Ben Avraham",
-                finish_date: "30/08/21"
+                finish_date: "30/08/2021"
             })
             .expect(201)
             .then(()=>{
@@ -223,9 +226,10 @@ describe("/api", ()=>{
                 .expect(200)
             })
         })
-        test("201 POST sign up for Masechta", ()=>{
+        //
+        test("201 POST sign up for a Masechta", ()=>{
             return request(app)
-            .post("/api/siyum/1")
+            .post("/api/siyum/1") 
             .send({
                 user_email: "mshalom689@gmail.com",
                 user_fname: "Shalom",
@@ -260,7 +264,7 @@ describe("/api", ()=>{
                 admin_fname: "Eli",
                 admin_sname: "Goldin",
                 siyum_name: "שלמה בן דוד",
-                finish_date: "14/08/21",
+                finish_date: "14/08/2021",
                 isopen: "false"
             }).expect(201)
             .then((res)=>{
@@ -290,7 +294,7 @@ describe("/api", ()=>{
                 admin_fname: "Eli",
                 admin_sname: "Goldin",
                 siyum_name: "שלמה בן דוד",
-                finish_date: "14/08/21",
+                finish_date: "14/08/2021",
                 isopen: "false",
                 msg: "Hi everyone, thanks for signing up"
             }).expect(201)
