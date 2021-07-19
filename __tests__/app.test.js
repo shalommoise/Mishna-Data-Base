@@ -304,5 +304,44 @@ describe("/api", ()=>{
             })
             
         })
+        test.only("201 PATCH email send daily reminders", ()=>{
+            return request(app)
+            .post("/api/siyumim/")
+            .send({
+                admin_email: "mshalom689@gmail.com",
+                admin_fname: "Shalom",
+                admin_sname: "Moise",
+                siyum_name: "Benjamin ",
+                finish_date: "30/08/2021"
+            }).then((res)=>{
+                const {admin_id} = res.body.siyumDetails;
+             
+                console.log(admin_id)
+                return request(app)
+                .post(`/api/siyum/${admin_id}`) 
+                .send({
+                    user_email: "mshalom689@gmail.com",
+                    user_fname: "Shalom",
+                    user_sname: "Moise",
+                    masechta: "Eiruvin"
+                })
+                .expect(201)
+                .then((res)=>{
+                   
+                    const {user_id, reminder} = res.body.user.userDetails;
+                    const oldReminder = reminder;
+                    return request(app)
+                    .patch(`/api/siyum/${admin_id}`)
+                    .send({reminder: "daily", user_id})
+                    .expect(201).then((res)=>{
+                        const {userDetails} = res.body;
+                        expect(userDetails.reminder).not.toBe(oldReminder)
+                        expect(userDetails.reminder).toBe("daily")
+                    })
+                    
+                })
+            })
+           
+        })
     })
 })

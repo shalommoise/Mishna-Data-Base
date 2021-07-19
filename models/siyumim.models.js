@@ -70,7 +70,7 @@ const signUp = (admin_id, userDetails) => {
 
 
     const createSiyumTable =(id)=>{
-        return pool.query(`CREATE TABLE Siyum_number_${id} (
+            return pool.query(`CREATE TABLE Siyum_number_${id} (
             user_id SERIAL PRIMARY KEY,
             user_email VARCHAR NOT NULL,
             user_fname VARCHAR NOT NULL,
@@ -106,6 +106,14 @@ const editSiyumDetails = (admin_id, edits)=> {
                     return results;
               }).catch((err)=>console.log(err))
           }
+const editUserDetails = (admin_id, user_id, reminder) =>{
 
+  const id = admin_id +'';  
+  return   pool.query(`UPDATE Siyum_number_${id} SET reminder = '${reminder}' WHERE user_id = ${user_id} RETURNING *;`)
+          .then((res)=>{
+            const {rows} = res;
+            const [result] = rows;
+            return result;
+          })}
     module.exports = {createSiyum, sendSiyumDetails,
-         sendSiyumim, sendSingleSiyumList, signUp, editSiyumDetails}
+         sendSiyumim, sendSingleSiyumList, signUp, editSiyumDetails, editUserDetails}

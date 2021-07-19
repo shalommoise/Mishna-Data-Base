@@ -1,4 +1,4 @@
-const {createSiyum, sendSiyumim, sendSingleSiyumList, signUp, sendSiyumDetails, editSiyumDetails} = require("../models/siyumim.models")
+const {createSiyum, sendSiyumim, sendSingleSiyumList, signUp, editUserDetails, sendSiyumDetails, editSiyumDetails} = require("../models/siyumim.models")
 const {altMasechtaNames, changeMasechtaNames, switchAltName} = require("../db/utils/utils");
 const {changefirstLetterToUpperCase} = require("../db/utils/utils");
 const {receiveSiyumDetails}= require("../emailServer/emailSender.js")
@@ -60,4 +60,15 @@ exports.patchSiyumDetails = (req,res,next)=>{
         // receiveSiyumDetails({ type: "adminSignUp", siyumDetails})
         res.status(201).send({siyumDetails})
     })
+}
+
+exports.patchUserDetails =(req,res,next)=>{
+const {admin_id} = req.params;
+const {user_id, reminder} =req.body;
+
+editUserDetails(admin_id, user_id, reminder)
+ .then((userDetails)=>{
+  res.status(201).send({userDetails})
+})
+
 }
