@@ -286,6 +286,7 @@ describe("/api", ()=>{
                })
             })
         })
+        
         test("201 POST siyum makers with message", ()=>{
             return request(app)
             .post("/api/siyumim/")
@@ -341,7 +342,11 @@ describe("/api", ()=>{
                     
                 })
             })
+            
            
         })
+        // check all live siyuim 
+        //sift through each siyum_number table for reminders 
+        test("200 GET all from ")
     })
 })

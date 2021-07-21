@@ -204,6 +204,11 @@ const getDate =()=>{
     return todaysDate;
 }
 
+const isSiyumLive = (todaysDate, finishDate) =>{
+    if(!todaysDate || !finishDate) throw new Error("Err: You must provide both dates");
+    if(todaysDate === finishDate) return false; 
+}
+
 module.exports = {addApostraphe, restrictTitle, changeSederTitle, reorderMasechtaArray, reorderNestedArrays,
     removeApostraphe, altMasechtaNames, switchAltName, linkToTitle, changeMasechtaNames, formatMishnayos,
-    changefirstLetterToUpperCase, getDate}
+    changefirstLetterToUpperCase, getDate, isSiyumLive}
