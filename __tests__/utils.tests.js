@@ -1,4 +1,4 @@
-const {reorderMasechtaArray, removeApostraphe, addApostraphe,changefirstLetterToUpperCase, getDate,linkToTitle} = require("../db/utils/utils");
+const {reorderMasechtaArray, removeApostraphe, addApostraphe,isSiyumLive,changefirstLetterToUpperCase, getDate,linkToTitle} = require("../db/utils/utils");
 const masechtaDetails = require("../db/data/mishnaIndex.json")
 describe("reorderMasechtaArray", ()=>{
     test("returns empty array", ()=>{
@@ -162,7 +162,7 @@ test("change first letter to uppercase", ()=>{
 })
   })
 
-  describe.only("getDate", ()=>{
+  describe("getDate", ()=>{
       test("get todays date", ()=>{
           expect(typeof getDate()).toBe("string")
       })
@@ -171,4 +171,22 @@ test("change first letter to uppercase", ()=>{
           expect(getDate()[5]).toBe("/");
           expect(getDate()[6]).toBe("2")
       })
+  })
+
+
+  describe.only("isSiyumLive(todaysDate, finishDate)", ()=>{
+test("params undefined throws error", ()=>{
+    
+    expect(()=>{isSiyumLive()}).toThrow("Err: You must provide both dates");
+    expect(()=>{isSiyumLive("")}).toThrow("Err: You must provide both dates");
+})
+test("todays date and finish date are the same returns true", ()=>{
+    expect(isSiyumLive("10/11/21", "10/11/21")).toBe(true)
+})
+test("todays date is after finish date returns false", ()=>{
+    expect(isSiyumLive("12/12/21", "11/12/21")).toBe(false)
+})
+test("works in different months", ()=>{
+    expect(isSiyumLive("31/03/21", "01/05/21")).toBe(true)
+})
   })

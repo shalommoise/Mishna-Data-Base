@@ -204,9 +204,20 @@ const getDate =()=>{
     return todaysDate;
 }
 
+const addDatesToNum =(date)=>{
+    
+    const arr = date.split("/")
+
+     const reverseArr = [];
+    arr.forEach((num)=>reverseArr.unshift(num));
+    return Number(reverseArr.join(""));
+ }
+
 const isSiyumLive = (todaysDate, finishDate) =>{
-    if(!todaysDate || !finishDate) throw new Error("Err: You must provide both dates");
-    if(todaysDate === finishDate) return false; 
+    if(!todaysDate || !finishDate) throw new Error("Err: You must provide both dates"); 
+   const todaysDateToNum = addDatesToNum(todaysDate);
+   const finishDateToNum = addDatesToNum(finishDate); 
+ return finishDateToNum >= todaysDateToNum;
 }
 
 module.exports = {addApostraphe, restrictTitle, changeSederTitle, reorderMasechtaArray, reorderNestedArrays,
