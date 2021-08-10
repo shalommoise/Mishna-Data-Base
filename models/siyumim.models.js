@@ -47,7 +47,8 @@ const createSiyum = (siyumInfo)=> {
 
 const signUp = (admin_id, userDetails) => {
         const {masechta, user_email, user_fname, user_sname, start_mishna, end_mishna } = userDetails;
-        return pool.query(`INSERT INTO Siyum_number_${admin_id} (user_email, user_fname, user_sname, masechta) 
+      
+        return pool.query(`INSERT INTO siyum_number_${admin_id} (user_email, user_fname, user_sname, masechta) 
         VALUES ('${user_email}', '${user_fname}', '${user_sname}', '${masechta}') RETURNING *;`)
        .then((res)=>{
   
@@ -56,6 +57,7 @@ const signUp = (admin_id, userDetails) => {
           results.masechta = altMasechtaNames[results.masechta]
            return results;
        }).then((userDetails)=>{
+       
            return sendSiyumDetails(admin_id)
            .then((siyumDetails)=>{
           

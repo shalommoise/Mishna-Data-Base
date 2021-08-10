@@ -168,7 +168,7 @@ describe("/api", ()=>{
             })
         })
     })
-  describe.only("/siyumim", ()=>{
+  describe("/siyumim", ()=>{
         // beforeEach(()=>resetSiyum())
         test("201 POST siyum admin ", ()=>{
             return request(app)
@@ -305,7 +305,7 @@ describe("/api", ()=>{
             })
             
         })
-        test.only("201 PATCH email send daily reminders", ()=>{
+        test("201 PATCH email send daily reminders", ()=>{
             return request(app)
             .post("/api/siyumim/")
             .send({
@@ -316,8 +316,6 @@ describe("/api", ()=>{
                 finish_date: "30/08/2021"
             }).then((res)=>{
                 const {admin_id} = res.body.siyumDetails;
-             
-                console.log(admin_id)
                 return request(app)
                 .post(`/api/siyum/${admin_id}`) 
                 .send({
@@ -347,6 +345,13 @@ describe("/api", ()=>{
         })
         // check all live siyuim 
         //sift through each siyum_number table for reminders 
-        test("200 GET all from ")
+        test.only("201 PATCH daiy check to see if siyum should be live or not", ()=>{
+            return request(app)
+                .patch("/api/siyumim/")
+                .expect(200)
+                .then((res)=>{
+                   const {siyumim} = res.body; 
+                })
+        })
     })
 })

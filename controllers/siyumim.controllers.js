@@ -33,9 +33,8 @@ exports.postMasechtaLearn =(req,res,next)=>{
     const userDetails = req.body;
     userDetails.user_fname = changefirstLetterToUpperCase(userDetails.user_fname);
     userDetails.user_sname = changefirstLetterToUpperCase(userDetails.user_sname);
-    userDetails.masechta = changefirstLetterToUpperCase(userDetails.masechta)
-        
-    const checkifAltName = Object.keys(altMasechtaNames).some((name)=>name===userDetails.masechta);
+    userDetails.masechta = changefirstLetterToUpperCase(userDetails.masechta);
+   const checkifAltName = Object.keys(altMasechtaNames).some((name)=>name===userDetails.masechta);
     const masechtaName = checkifAltName ? userDetails.masechta : switchAltName(altMasechtaNames)[userDetails.masechta];
     userDetails.masechta = masechtaName;
     signUp(admin_id, userDetails)
