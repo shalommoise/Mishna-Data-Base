@@ -219,7 +219,26 @@ const isSiyumLive = (todaysDate, finishDate) =>{
    const finishDateToNum = addDatesToNum(finishDate); 
  return finishDateToNum >= todaysDateToNum;
 }
+const convertToEpoch = (date)=>{
+   
+    const arr = date.split("/")
+    const shortYear = arr.pop();
+    const fullYear = "20" + shortYear;
+    arr.push(fullYear);
+    const americanDateArr = [arr[1], arr[0], arr[2]];
+    const ameticanDate = americanDateArr.join("/");
+    const newDate = new Date(ameticanDate +" 01:00")
+    const epoch = newDate.getTime();
+    return epoch ;
+}
+const daysLeft = (start, end)=>{
+    if(!start || !end) throw new Error("Err: You must provide both dates"); 
+ 
+    const epochStart = convertToEpoch(start);
+    const epochEnd = convertToEpoch(end);
+    return (epochEnd - epochStart)/86400000;
+}
 
 module.exports = {addApostraphe, restrictTitle, changeSederTitle, reorderMasechtaArray, reorderNestedArrays,
     removeApostraphe, altMasechtaNames, switchAltName, linkToTitle, changeMasechtaNames, formatMishnayos,
-    changefirstLetterToUpperCase, getDate, isSiyumLive}
+    changefirstLetterToUpperCase, getDate, isSiyumLive, daysLeft, convertToEpoch}

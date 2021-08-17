@@ -1,4 +1,4 @@
-const {reorderMasechtaArray, removeApostraphe, addApostraphe,isSiyumLive,changefirstLetterToUpperCase, getDate,linkToTitle} = require("../db/utils/utils");
+const {reorderMasechtaArray, removeApostraphe, addApostraphe,isSiyumLive,changefirstLetterToUpperCase, getDate,linkToTitle, daysLeft} = require("../db/utils/utils");
 const masechtaDetails = require("../db/data/mishnaIndex.json")
 describe("reorderMasechtaArray", ()=>{
     test("returns empty array", ()=>{
@@ -174,7 +174,7 @@ test("change first letter to uppercase", ()=>{
   })
 
 
-  describe.only("isSiyumLive(todaysDate, finishDate)", ()=>{
+  describe("isSiyumLive(todaysDate, finishDate)", ()=>{
 test("params undefined throws error", ()=>{
     
     expect(()=>{isSiyumLive()}).toThrow("Err: You must provide both dates");
@@ -190,3 +190,24 @@ test("works in different months", ()=>{
     expect(isSiyumLive("31/03/21", "01/05/21")).toBe(true)
 })
   })
+
+describe.only("daysLeft(todaysDate, finishDate)", ()=>{
+ test("Error cases", ()=>{
+    expect(()=>{daysLeft()}).toThrow("Err: You must provide both dates");
+    expect(()=>{daysLeft("", "10/11/22")}).toThrow("Err: You must provide both dates");
+    expect(()=>{daysLeft("10/11/22", "")}).toThrow("Err: You must provide both dates");
+ })
+ test("same dates means no dates left", ()=>{
+     expect(daysLeft("10/11/22", "10/11/22")).toBe(0)
+ })
+ test("1 day left", ()=>{
+    expect(daysLeft("30/08/21", "31/08/21")).toBe(1)
+})
+ test("30 days left", ()=>{
+     expect(daysLeft("01/08/21", "31/08/21")).toBe(30)
+ })
+ test("works between months", ()=>{
+    expect(daysLeft("30/08/21", "19/09/21")).toBe(20)
+
+ })
+})
