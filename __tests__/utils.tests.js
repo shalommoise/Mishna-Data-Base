@@ -194,20 +194,20 @@ test("works in different months", ()=>{
 describe.only("daysLeft(todaysDate, finishDate)", ()=>{
  test("Error cases", ()=>{
     expect(()=>{daysLeft()}).toThrow("Err: You must provide both dates");
-    expect(()=>{daysLeft("", "10/11/22")}).toThrow("Err: You must provide both dates");
-    expect(()=>{daysLeft("10/11/22", "")}).toThrow("Err: You must provide both dates");
+    expect(()=>{daysLeft("", "10/11/2022")}).toThrow("Err: You must provide both dates");
+    expect(()=>{daysLeft("10/11/2022", "")}).toThrow("Err: You must provide both dates");
  })
  test("same dates means no dates left", ()=>{
-     expect(daysLeft("10/11/22", "10/11/22")).toBe(0)
+     expect(daysLeft("10/11/2022", "10/11/2022")).toBe(0)
  })
  test("1 day left", ()=>{
-    expect(daysLeft("30/08/21", "31/08/21")).toBe(1)
+    expect(daysLeft("30/08/2021", "31/08/2021")).toBe(1)
 })
  test("30 days left", ()=>{
-     expect(daysLeft("01/08/21", "31/08/21")).toBe(30)
+     expect(daysLeft("01/08/2021", "31/08/2021")).toBe(30)
  })
  test("works between months", ()=>{
-    expect(daysLeft("30/08/21", "19/09/21")).toBe(20)
+    expect(daysLeft("30/08/2021", "19/09/2021")).toBe(20)
 
  })
 })

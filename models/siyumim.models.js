@@ -3,8 +3,9 @@ const {altMasechtaNames, removeApostraphe, getDate} = require("../db/utils/utils
 const {gethebrewDate} = require("../db/utils/hebrewDateConverter")
 
 const createSiyum = (siyumInfo)=> {
+  
    const {admin_email, admin_fname, admin_sname, siyum_name , finish_date, isopen, msg} = siyumInfo;
-//    const hebDate = ''
+
  let columns =  isopen === "false" ? ", isopen ": "";
    let values =  isopen === "false" ? ", false ":"";
    columns += msg ? ', msg' : '';
@@ -18,10 +19,11 @@ const createSiyum = (siyumInfo)=> {
                            const {rows} = res;
                            const [result] = rows;
                            const {admin_id} = result;
-                           createSiyumTable(admin_id)
-                             return result;                                
-         })})
-       .catch((err)=>console.log(err));
+                          
+                         const makeTable = createSiyumTable(admin_id)
+                         return Promise.all([makeTable]).then(()=>result)
+                                                          
+         })}).catch((err)=>console.log(err));
         }
 
   const sendSiyumim =()=> pool.query("SELECT * FROM siyum_makers WHERE isopen = 'true';")
@@ -47,7 +49,6 @@ const createSiyum = (siyumInfo)=> {
 
 const signUp = (admin_id, userDetails) => {
         const {masechta, user_email, user_fname, user_sname, start_mishna, end_mishna } = userDetails;
-      
         return pool.query(`INSERT INTO siyum_number_${admin_id} (user_email, user_fname, user_sname, masechta) 
         VALUES ('${user_email}', '${user_fname}', '${user_sname}', '${masechta}') RETURNING *;`)
        .then((res)=>{

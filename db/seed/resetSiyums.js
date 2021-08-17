@@ -41,4 +41,4 @@ const insertExample = ()=>pool.query("INSERT INTO siyum_makers (admin_email, adm
 
 resetSiyum();
 
-module.exports = {resetSiyum};
+// module.exports = {resetSiyum};
