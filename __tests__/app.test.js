@@ -1,6 +1,7 @@
 const request = require("supertest");
 const app = require("../app");
-const {resetSiyum} = require("../db/seed/resetSiyums")
+const {resetSiyum} = require("../db/seed/resetSiyums");
+const {checkIfFinished} = require("../models/updates.models")
 describe("/api", ()=>{
 //  beforeEach(()=>resetSiyum())
     describe("/sedarim/", ()=>{
@@ -326,7 +327,7 @@ describe("/api", ()=>{
                 })
                 .expect(201)
                 .then((res)=>{
-                   
+                  
                     const {user_id, reminder} = res.body.user.userDetails;
                     const oldReminder = reminder;
                     return request(app)
@@ -345,13 +346,44 @@ describe("/api", ()=>{
         })
         // check all live siyuim 
         //sift through each siyum_number table for reminders 
-        test.only("201 PATCH daiy check to see if siyum should be live or not", ()=>{
+        test("201 PATCH daiy check to see if siyum should be live or not", ()=>{
             return request(app)
-                .patch("/api/siyumim/")
-                .expect(200)
-                .then((res)=>{
-                   const {siyumim} = res.body; 
-                })
+            .post("/api/siyumim/")
+            .send({
+                admin_email: "mshalom689@gmail.com",
+                admin_fname: "Shalom",
+                admin_sname: "Moise",
+                siyum_name: "Test case",
+                finish_date: "10/08/2021"
+            })
+            .then((res)=>{
+              
+                const {siyumDetails} = res.body;
+               const {admin_id, isopen} = siyumDetails;
+               expect(isopen).toBe("true");
+               const old = isopen;                         
+                  return {admin_id, old}
+                }).then((res)=>{     
+                    const {admin_id, old} = res; 
+                    return checkIfFinished().then(()=>{
+                        return request(app)
+                        .get(`/api/siyumim/${admin_id}`)
+                        .expect(200)
+                        .then((res)=>{
+                    
+                   
+                    const {siyumAdmin} = res.body;
+                    const {isopen} = siyumAdmin;
+                    expect(isopen).not.toBe(old);
+                    expect(isopen).toBe("false")
+                  
+                          
+                       })
+                    })
+                          
+                   
+                
+            })
         })
     })
 })
