@@ -200,7 +200,6 @@ const getDate =()=>{
     let monthNum = months.indexOf(monthEng);
     if(monthNum < 10) monthNum = "0" + monthNum;
     const todaysDate = `${day}/${monthNum}/${year}`;
- 
     return todaysDate;
 }
 
@@ -220,11 +219,7 @@ const isSiyumLive = (todaysDate, finishDate) =>{
  return finishDateToNum >= todaysDateToNum;
 }
 const convertToEpoch = (date)=>{
-   
     const arr = date.split("/")
-    const shortYear = arr.pop();
-    const fullYear = "20" + shortYear;
-    arr.push(fullYear);
     const americanDateArr = [arr[1], arr[0], arr[2]];
     const americanDate = americanDateArr.join("/");
     const newDate = new Date(americanDate +" 01:00")
