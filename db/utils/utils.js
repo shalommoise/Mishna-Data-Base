@@ -226,8 +226,8 @@ const convertToEpoch = (date)=>{
     const fullYear = "20" + shortYear;
     arr.push(fullYear);
     const americanDateArr = [arr[1], arr[0], arr[2]];
-    const ameticanDate = americanDateArr.join("/");
-    const newDate = new Date(ameticanDate +" 01:00")
+    const americanDate = americanDateArr.join("/");
+    const newDate = new Date(americanDate +" 01:00")
     const epoch = newDate.getTime();
     return epoch ;
 }
