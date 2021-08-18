@@ -12,3 +12,6 @@ exports.checkIfFinished =()=>pool.query("SELECT admin_id, date_made , isopen  FR
 const closeSiyum = (siyumIndex, arr)=>{
                     return pool.query(`UPDATE siyum_makers SET isopen = false WHERE admin_id=${arr[siyumIndex].admin_id} RETURNING *;`)
                                   .then(()=> siyumIndex < arr.length - 1  && closeSiyum(siyumIndex + 1, arr)).catch((err)=>console.log(err))}
+
+
+// only send one daily email to someone that signed up for s masechtos

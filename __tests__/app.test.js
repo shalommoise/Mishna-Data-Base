@@ -227,7 +227,7 @@ describe("/api", ()=>{
                 .expect(200)
             })
         })
-        //
+    
         test("201 POST sign up for a Masechta", ()=>{
             return request(app)
             .post("/api/siyum/1") 
@@ -429,5 +429,16 @@ describe("/api", ()=>{
                 expect(end_mishna).toBe(57);
             })
         })
+    })
+    describe("/mishna", ()=>{
+     test("200 GET masechta details from mishna_ids", ()=>{
+         return request(app)
+         .get("/api/mishna?start=1&end=57")
+         .expect(200)
+         .then((res)=>{
+             const {masechtaDetails} = res.body;
+             expect(masechtaDetails.masechta_name).toBe("Brachos");
+         })
+     })
     })
 })

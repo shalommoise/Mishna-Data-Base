@@ -62,7 +62,7 @@ const findMasechta = (start_mishna, end_mishna) =>{
     rows.forEach((row)=>{
       if(!arr.includes(row.masechta_name))arr.push(row.masechta_name);
     })
-    if (arr.length === 1) return {masechta: arr[0]};
+    return {masechta: arr[0]};
   })
 }
 const signUp = (admin_id, userDetails) => {
