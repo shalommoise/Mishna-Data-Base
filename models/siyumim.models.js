@@ -45,21 +45,37 @@ const createSiyum = (siyumInfo)=> {
                     return rows;
                 })
 
-const finsMishnaNumber = (masechta, startPerek, endPerek) =>{
+const findMishnaNumber = (masechta, startPerek, endPerek) =>{
+
   return pool.query(`SELECT mishna_id FROM mishna_table Where masechta_name = '${masechta}' ORDER BY mishna_id;`)
   .then((res)=>{
     const {rows} = res;
-    const answer = {start_mishna: rows[0].mishna_id, end_mishna :  rows[rows.length-1].mishna_id}
+    const answer = {mishnaStart: rows[0].mishna_id, mishnaEnd :  rows[rows.length-1].mishna_id};
     return answer;
+  }).catch((err)=> console.log(err))
+}
+const findMasechta = (start_mishna, end_mishna) =>{
+  return pool.query(`SELECT mishna_id, masechta_name FROM mishna_table Where mishna_id BETWEEN ${start_mishna} AND ${end_mishna} ORDER BY mishna_id;`)
+  .then((res)=>{
+    const {rows} = res;
+    const arr = [];
+    rows.forEach((row)=>{
+      if(!arr.includes(row.masechta_name))arr.push(row.masechta_name);
+    })
+    if (arr.length === 1) return {masechta: arr[0]};
   })
 }
-
 const signUp = (admin_id, userDetails) => {
-        const {masechta, user_email, user_fname, user_sname} = userDetails;
-        return finsMishnaNumber(masechta).then((answer)=>{
-              const {start_mishna, end_mishna} = answer;
-          return pool.query(`INSERT INTO siyum_number_${admin_id} (user_email, user_fname, user_sname, masechta, start_mishna, end_mishna) 
-          VALUES ('${user_email}', '${user_fname}', '${user_sname}', '${masechta}', ${start_mishna}, ${end_mishna}) RETURNING *;`)
+  
+        const {masechta, user_email, user_fname, user_sname, start_mishna, end_mishna} = userDetails;
+        const figureOut = masechta ? findMishnaNumber(masechta, start_mishna, end_mishna) : findMasechta(start_mishna, end_mishna) ;
+        return figureOut.then((answer)=>{
+              let {mishnaStart, mishnaEnd, masechta} = answer;
+                  if(!mishnaStart) mishnaStart = start_mishna;
+                  if(!mishnaEnd) mishnaEnd = end_mishna;   
+                  if(!masechta) masechta = userDetails.masechta; 
+            return pool.query(`INSERT INTO siyum_number_${admin_id} (user_email, user_fname, user_sname, masechta, start_mishna, end_mishna) 
+          VALUES ('${user_email}', '${user_fname}', '${user_sname}', '${masechta}', ${mishnaStart}, ${mishnaEnd}) RETURNING *;`)
          .then((res)=>{
     
              const {rows} = res;
