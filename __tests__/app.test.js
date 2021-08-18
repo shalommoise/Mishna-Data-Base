@@ -437,7 +437,17 @@ describe("/api", ()=>{
          .expect(200)
          .then((res)=>{
              const {masechtaDetails} = res.body;
-             expect(masechtaDetails.masechta_name).toBe("Brachos");
+             expect(masechtaDetails[0].masechta_name).toBe("Brachos");
+         })
+     })
+     test("200 GET multiple masechtos from mishna_ids", ()=>{
+         return request(app)
+         .get("/api/mishna?start=1&end=126")
+         .expect(200)
+         .then((res)=>{
+             const {masechtaDetails} = res.body;
+             expect(masechtaDetails[0].masechta_name).toBe("Brachos");
+             expect(masechtaDetails[1].masechta_name).toBe("Peah");
          })
      })
     })
