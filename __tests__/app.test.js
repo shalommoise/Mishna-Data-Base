@@ -344,8 +344,7 @@ describe("/api", ()=>{
             
            
         })
-        // check all live siyuim 
-        //sift through each siyum_number table for reminders 
+      
         test("201 PATCH daiy check to see if siyum should be live or not", ()=>{
             return request(app)
             .post("/api/siyumim/")
@@ -383,6 +382,28 @@ describe("/api", ()=>{
                           
                    
                 
+            })
+        })
+        
+        test("201 POST sign up for a Masechta: figure out mishna start and end", ()=>{
+            return request(app)
+            .post("/api/siyum/1") 
+            .send({
+                user_email: "mshalom689@gmail.com",
+                user_fname: "Shalom",
+                user_sname: "Moise",
+                masechta: "Brachos"
+            })
+            .expect(201)
+            .then((res)=>{
+                const {user_email, user_fname, user_sname, masechta, start_mishna, end_mishna} = res.body.user.userDetails;
+ 
+                expect(user_email).toBe("mshalom689@gmail.com");
+                expect(user_fname).toBe("Shalom");
+                expect(user_sname).toBe("Moise");
+                expect(masechta).toBe("Brachos");
+                expect(start_mishna).toBe(1);
+                expect(end_mishna).toBe(57);
             })
         })
     })
