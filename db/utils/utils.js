@@ -233,7 +233,113 @@ const daysLeft = (start, end)=>{
     const epochEnd = convertToEpoch(end);
     return (epochEnd - epochStart)/86400000;
 }
+const masechtaNames = require("../data/mishnaIndex.json");
+const hebrewNumeralsSmall = ['','א',"ב","ג","ד","ה","ו","ז","ח","ט","י"]
+const hebrewNumeralsBig =['', 'י','כ','ל','מ','נ','ס','ע','פ','צ','ק']
+const convert =(num)=>{
+  if(!num) num = 0;
+
+const big = Math.floor(num/10);
+const small = Math.round((num/10 - big)*10);
+
+if(big === 1 && small === 5)  return 'טו'
+
+if(big === 1 && small === 6) return 'טז'
+return hebrewNumeralsBig[big] +hebrewNumeralsSmall[small]
+
+
+}
+
+const mishnaNumbers =(digits)=>{
+if(!digits) return ''
+const [chapter, mishna] = digits.split(":")
+
+  return `${convert(chapter)}:${convert(mishna)}`
+}
+const findTitle = (title) =>{
+    if(!title) return '';
+    const arr =  title.split(" ");
+if(arr.length === 5) {  
+     const firstName = `${arr[0]} ${arr[1]}`;
+     const [firstNum, secName] = arr[2].split("-");
+     const lastName = `${secName} ${arr[3]}`;
+     const lastNum = arr[4];
+     const firstMasechtaName = switchAltName(altMasechtaNames)[firstName];
+     const [details]  = masechtaNames.filter((masechta)=>masechta.masechtaName === firstMasechtaName);
+     const firstHebName = details.masechtaNameHe;
+     const lastMasechtaName = switchAltName(altMasechtaNames)[lastName];
+     const [lastDetails]  = masechtaNames.filter((masechta)=>masechta.masechtaName === lastMasechtaName);
+     const lastHebName = lastDetails.masechtaNameHe;
+     const firstGem = mishnaNumbers(firstNum);
+     const lastGem = mishnaNumbers(lastNum);
+     return `${firstHebName} ${firstGem}-${lastHebName} ${lastGem}`;
+}
+ else if(arr.length === 2 ) {
+    const [masechesName, numbers] = arr;
+    const masechtaName = switchAltName(altMasechtaNames)[masechesName];
+    const [details]  = masechtaNames.filter((masechta)=>masechta.masechtaName === masechtaName);
+    const hebrewName = details.masechtaNameHe;
+
+const [firstNumber, secondNumber] = numbers.split("-");
+const firstGem = mishnaNumbers(firstNumber);
+const secondGem = mishnaNumbers(secondNumber)
+ return `${hebrewName} ${firstGem}-${secondGem}`;
+ } else if(arr.length === 3) {
+     if(!Number(arr[1][0])) {
+         const newArr  = [`${arr[0]} ${arr[1]}`, arr[2]]
+         const [masechesName, numbers] = newArr;
+         const masechtaName = switchAltName(altMasechtaNames)[masechesName];
+         const [details]  = masechtaNames.filter((masechta)=>masechta.masechtaName === masechtaName);
+         const hebrewName = details.masechtaNameHe;
+     
+     const [firstNumber, secondNumber] = numbers.split("-");
+     const firstGem = mishnaNumbers(firstNumber);
+     const secondGem = mishnaNumbers(secondNumber)
+    
+      return `${hebrewName} ${firstGem}-${secondGem}`; 
+     }
+     const [firstName, toFix, lastNum] = arr;
+     const firstMasechtaName = switchAltName(altMasechtaNames)[firstName];
+     const [details]  = masechtaNames.filter((masechta)=>masechta.masechtaName === firstMasechtaName);
+     const firstHebName = details.masechtaNameHe;
+    const [firstNum , lastName] = toFix.split("-");
+    const lastMasechtaName = switchAltName(altMasechtaNames)[lastName];
+     const [lastDetails]  = masechtaNames.filter((masechta)=>masechta.masechtaName === lastMasechtaName);
+     const lastHebName = lastDetails.masechtaNameHe;
+     const firstGem = mishnaNumbers(firstNum);
+     const lastGem = mishnaNumbers(lastNum);
+     return `${firstHebName} ${firstGem}-${lastHebName} ${lastGem}`
+ } else {
+    const [firstName, toFix, secName ,lastNum] = arr;
+    if(!Number(toFix[0])) {
+
+       const firstMasechtaName = switchAltName(altMasechtaNames)[firstName + " " + toFix];
+       const [details]  = masechtaNames.filter((masechta)=>masechta.masechtaName === firstMasechtaName);
+       const firstHebName = details.masechtaNameHe; 
+       const [firstNum , lastName] = secName.split("-");
+       const lastMasechtaName = switchAltName(altMasechtaNames)[`${lastName}`];
+       const [lastDetails]  = masechtaNames.filter((masechta)=>masechta.masechtaName === lastMasechtaName);
+       const lastHebName = lastDetails.masechtaNameHe;
+       const firstGem = mishnaNumbers(firstNum);
+       const lastGem = mishnaNumbers(lastNum);
+       return `${firstHebName} ${firstGem}-${lastHebName} ${lastGem}`
+    } 
+    const [firstNum , lastName] = toFix.split("-");
+   
+    const firstMasechtaName = switchAltName(altMasechtaNames)[firstName];
+    const [details]  = masechtaNames.filter((masechta)=>masechta.masechtaName === firstMasechtaName);
+    const firstHebName = details.masechtaNameHe;
+    
+    const lastMasechtaName = switchAltName(altMasechtaNames)[`${lastName} ${secName}`];
+     const [lastDetails]  = masechtaNames.filter((masechta)=>masechta.masechtaName === lastMasechtaName);
+     const lastHebName = lastDetails.masechtaNameHe;
+     const firstGem = mishnaNumbers(firstNum);
+     const lastGem = mishnaNumbers(lastNum);
+     return `${firstHebName} ${firstGem}-${lastHebName} ${lastGem}`
+   
+ }
+}
 
 module.exports = {addApostraphe, restrictTitle, changeSederTitle, reorderMasechtaArray, reorderNestedArrays,
     removeApostraphe, altMasechtaNames, switchAltName, linkToTitle, changeMasechtaNames, formatMishnayos,
-    changefirstLetterToUpperCase, getDate, isSiyumLive, daysLeft, convertToEpoch}
+    changefirstLetterToUpperCase, getDate, isSiyumLive, daysLeft, convertToEpoch, findTitle}

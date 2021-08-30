@@ -1,6 +1,6 @@
 const {pool, client} = require("../connection.js");
 const masechtaDetails = require("../data/mishnaIndex.json");
-const {changeSederTitle, reorderMasechtaArray , reorderNestedArrays, removeApostraphe, altMasechtaNames, linkToTitle} = require("../utils/utils");
+const {changeSederTitle, reorderMasechtaArray , reorderNestedArrays, removeApostraphe, altMasechtaNames, linkToTitle, findTitle} = require("../utils/utils");
 const {getMishnaText} = require("../data/MasechtaDetails");
 const chapterIndex = require("../data/chapterIndex.json") ;
 const shiurimLinks = require("../data/shiurimLinks");
@@ -121,7 +121,7 @@ const insertMishnaText = () =>{
 const shiurimDatabase = ()=>{
     return pool.connect()
     .then(()=>{
-    
+    // /nsalfa use hebrew name for masechta and gematria api to get hebrew title for shiur
         const mishnayosBySeder = {}
         reorderedMasechtos.forEach((masechta)=>{
             mishnayosBySeder[masechta["sederName"]] ? mishnayosBySeder[masechta["sederName"]].push(masechta) :   mishnayosBySeder[masechta["sederName"]] = [masechta]
@@ -162,8 +162,9 @@ if(anotherUniqueCase) lastMishna = arr[n+4];
 let title = `${altMasechtaNames[firstMishna.masechta_name]} ${firstMishna.perek_number}:${firstMishna.mishna_number}-${lastMishna.perek_number}:${lastMishna.mishna_number}`;
 if(firstMishna.masechta_name !== lastMishna.masechta_name) title = `${altMasechtaNames[firstMishna.masechta_name]} ${firstMishna.perek_number}:${firstMishna.mishna_number}-${altMasechtaNames[lastMishna.masechta_name]} ${lastMishna.perek_number}:${lastMishna.mishna_number}`;
 if(firstMishna.mishna_id === lastMishna.mishna_id) title = `${altMasechtaNames[firstMishna.masechta_name]} ${firstMishna.perek_number}:${firstMishna.mishna_number}`;
-return pool.query(`INSERT INTO shiurim_table (start_mishna, end_mishna, number_of_mishnayos, shiur_title)
-                                      VALUES (${firstMishna.mishna_id}, ${lastMishna.mishna_id}, ${lastMishna.mishna_id - firstMishna.mishna_id + 1}, '${title}');`)
+const heTitle = findTitle(title)
+return pool.query(`INSERT INTO shiurim_table (start_mishna, end_mishna, number_of_mishnayos, shiur_title, shiur_title_he)
+                                      VALUES (${firstMishna.mishna_id}, ${lastMishna.mishna_id}, ${lastMishna.mishna_id - firstMishna.mishna_id + 1}, '${title}', '${heTitle}');`)
                                       .then(()=>{
                                           console.log(`added ${title}`);
                                           if(uniqueCase) return insertShiur (arr, n + 3);

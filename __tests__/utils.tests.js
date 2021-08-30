@@ -1,4 +1,4 @@
-const {reorderMasechtaArray, removeApostraphe, addApostraphe,isSiyumLive,changefirstLetterToUpperCase, getDate,linkToTitle, daysLeft} = require("../db/utils/utils");
+const {reorderMasechtaArray, removeApostraphe, addApostraphe, findTitle,isSiyumLive,changefirstLetterToUpperCase, getDate,linkToTitle, daysLeft} = require("../db/utils/utils");
 const masechtaDetails = require("../db/data/mishnaIndex.json")
 describe("reorderMasechtaArray", ()=>{
     test("returns empty array", ()=>{
@@ -191,7 +191,7 @@ test("works in different months", ()=>{
 })
   })
 
-describe.only("daysLeft(todaysDate, finishDate)", ()=>{
+describe("daysLeft(todaysDate, finishDate)", ()=>{
  test("Error cases", ()=>{
     expect(()=>{daysLeft()}).toThrow("Err: You must provide both dates");
     expect(()=>{daysLeft("", "10/11/2022")}).toThrow("Err: You must provide both dates");
@@ -211,3 +211,36 @@ describe.only("daysLeft(todaysDate, finishDate)", ()=>{
 
  })
 })
+
+describe.only("findTitle", ()=>{
+    test("returns empty string", ()=>{
+        expect(findTitle()).toBe("")
+        expect(findTitle("")).toBe("")
+    })
+    test("Brachos 5:3-6:1", ()=>{
+        expect(findTitle("Brachos 5:3-6:1")).toBe("ברכות ה:ג-ו:א")
+        expect(findTitle("Brachos 8:1-8:4")).toBe("ברכות ח:א-ח:ד")
+    })
+    test("Sheviis 10:9-Terumos 1:3", ()=>{
+        expect(findTitle("Sheviis 10:9-Terumos 1:3")).toBe("שביעית י:ט-תרומות א:ג")
+    })
+    test("Maasros 5:7-Maaser Sheni 1:2", ()=>{
+        expect(findTitle("Maasros 5:7-Maaser Sheni 1:2")).toBe("מעשרות ה:ז-מעשר שני א:ב")
+    })
+    test("Maaser Sheni 1:3-1:6", ()=>{
+        expect(findTitle("Maaser Sheni 1:3-1:6")).toBe("מעשר שני א:ג-א:ו")
+    })
+    test("Rosh Hashana 4:7-Taanis 1:1", ()=>{
+        expect(findTitle("Rosh Hashana 4:7-Taanis 1:1")).toBe("ראש השנה ד:ז-תענית א:א")
+    })
+    test("Bava Kama 10:8-Bava Metzia 1:1", ()=>{
+        expect(findTitle("Bava Kama 10:8-Bava Metzia 1:1")).toBe("בבא קמא י:ח-בבא מציעא א:א")
+    })
+})
+
+// Brachos 5:3-6:1 Maaser Sheni 1:3-1.6 Rosh Hashana 4.7-Taanis 1.1
+// Brachos 6:2-6:5
+// Brachos 6:6-7:1 Maasros 5:7-Maaser Sheni 1:2
+// Brachos 7:2-7:5
+// Brachos 8:1-8:4
+// Sheviis 10:9-Terumos 1:3 Bava Kama 10.8-Bava Metzia 1.1

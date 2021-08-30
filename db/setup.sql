@@ -58,6 +58,7 @@ CREATE TABLE shiurim_table
   end_mishna INT,
   number_of_mishnayos INT,
   shiur_title VARCHAR,
+  shiur_title_he VARCHAR,
   shiur_text VARCHAR,
    shiur_audio VARCHAR,
   FOREIGN KEY(start_mishna) REFERENCES mishna_table(mishna_id),
